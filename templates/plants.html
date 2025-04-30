@@ -1,6 +1,24 @@
-<!-- just for testing  -->
-{% for plants in data %}
-    <h4>{{ plants.name }}</h4>
-    <h6>{{ plants.schedule }} Days</h6>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- just for testing  -->
+    {% for plants in data %}
+        <h4>{{ plants.name }}</h4>
+        <h6>{{ plants.schedule }} Days</h6>
+
+    {% endfor %}
+
+    <!-- Add Plant Button -->
+    <a href="/add_plant">
+        <button>Add Plant</button>
+    </a>    
+
     
-{% endfor %}
+</body>
+</html>
+

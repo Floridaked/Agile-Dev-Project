@@ -43,6 +43,16 @@ def add_plant():
     return jsonify(new_plant.to_dict())
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
 
+@app.route("/add_plant", methods=["GET", "POST"])
+def add_plant_page():
+    if request.method == "POST":
+        name = request.form["name"]
+        schedule = int(request.form["schedule"])
+        new_plant = Plant(name=name, schedule=schedule)
+        db.session.add(new_plant)
+        db.session.commit()
+        return redirect("/my_plants")
+    return render_template("add_plant.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
