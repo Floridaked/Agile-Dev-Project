@@ -19,8 +19,9 @@ def home():
 
 @app.route("/my_plants") 
 def categories(): 
-    statement = db.select(Plant)
+    statement = db.select(Plant).order_by(Plant.schedule.asc())
     records = db.session.execute(statement).scalars()
+
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<string:name>") 
