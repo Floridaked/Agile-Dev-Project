@@ -4,17 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Plant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Add a New Plant</h1>
-    <form action="/add_plant" method="POST">
-        <label for="name">Plant Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+    <nav>
+        <h2>🌱 Plant Tracker</h2>
+        <div class="nav-links">
+          <a href="{{ url_for('home') }}">Home</a>
+          <a href="{{ url_for('categories') }}">My Plants</a>
+          <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+        </div>
+    </nav>
 
-        <label for="schedule">Watering Schedule (Days):</label>
-        <input type="number" id="schedule" name="schedule" required><br><br>
+    <main>
+        <h1>Add a New Plant</h1>
+        <form action="{{ url_for('add_plant_page') }}" method="POST">
+            <label for="name">Plant Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
 
-        <button type="submit">Add Plant</button>
-    </form>
+            <label for="schedule">Watering Frequency (days):</label><br>
+            <input type="number" id="schedule" name="schedule" required><br><br>
+
+        
+
+            <input type="submit" value="Add Plant">
+        </form>
+    </main>
 </body>
 </html>
