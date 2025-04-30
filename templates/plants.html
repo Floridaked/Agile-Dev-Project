@@ -3,21 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Plants</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .add-btn {
+            background-color: #89b489;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        .add-btn:hover {
+            background-color: #729c72;
+        }
+    </style>
+
 </head>
 <body>
-    <!-- just for testing  -->
-    {% for plants in data %}
-        <h4>{{ plants.name }}</h4>
-        <h6>{{ plants.schedule }} Days</h6>
+    <nav>
+        <h2>🌱 Plant Tracker</h2>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('categories') }}">My Plants</a>
+        </div>
 
-    {% endfor %}
+    </nav>
 
-    <!-- Add Plant Button -->
-    <a href="/add_plant">
-        <button>Add Plant</button>
-    </a>    
+    <main>
+        <div class="top-bar">
+            <h1>My Plants</h1>
+            <a href="{{ url_for('add_plant_page') }}" class="add-btn">➕ Add Plant</a>
+        </div>
 
+        {% for plant in data %}
+        <div class="card">
+            <h2>{{ plant.name }}</h2>
+            <p>Water every {{ plant.schedule }} days</p>
+            <a href="{{ url_for('category_detail', name=plant.name) }}">View Details</a>
+        </div>
+        {% else %}
+        <p>No plants yet! Click "Add Plant" to get started.</p>
+        {% endfor %}
+    </main>
+  
     
 </body>
 </html>
