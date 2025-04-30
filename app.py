@@ -5,11 +5,6 @@ from models import *
 from datetime import datetime as dt
 from pathlib import Path
 
-
-
-
-
-
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.instance_path = Path(".").resolve()
@@ -34,14 +29,7 @@ def category_detail(name):
     plant = db.session.execute(stmt).scalar()
     return render_template("plant_detail.html", data=plant)
 
-@app.route("/api/plants", methods=["POST"])
-def add_plant():
-    data = request.json
-    new_plant = Plant(name=data["name"], schedule=data["schedule"])
-    db.session.add(new_plant)
-    db.session.commit()
-    return jsonify(new_plant.to_dict())
-#for adding plants need to create javascript and connect to home.html where we can have add plants form
+
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
