@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Plant Tracker - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        a.button-link {
+            background-color: #89b489;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        a.button-link:hover {
+            background-color: #729c72;
+
+        }
+    </style>
 </head>
 <body>
-    <h1>Homepage</h1>
-
-
-    <a href="/my_plants">My Plants</a>
+    <main class="home-main">
+        <h1>🌿 Welcome to Plant Tracker 🌿</h1>
+        <p>Never forget to water your plants again!</p>
+        <a class="button-link" href="{{ url_for('categories') }}">Go to My Plants</a>
+    </main>
     
 </body>
 </html>
