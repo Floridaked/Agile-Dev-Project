@@ -16,20 +16,17 @@ db.init_app(app)
 def home(): 
     return render_template("home.html")
 
-
 @app.route("/my_plants") 
-def categories(): 
+def plants(): 
     statement = db.select(Plant)
     records = db.session.execute(statement).scalars()
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<string:name>") 
-def category_detail(name):     
+def plant_detail(name):     
     stmt = db.select(Plant).where(Plant.name == name) 
     plant = db.session.execute(stmt).scalar()
     return render_template("plant_detail.html", data=plant)
-
-
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
