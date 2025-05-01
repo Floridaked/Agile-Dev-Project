@@ -43,5 +43,19 @@ def add_plant_page():
         return redirect("/my_plants")
     return render_template("add_plant.html")
 
+@app.route("/edit_plant/<int:id>", methods=["GET", "POST"])
+def edit_plant(id):
+    plant = db.session.get(Plant, id)
+    if not plant:
+        return "Plant not found", 404
+
+    if request.method == "POST":
+        plant.name = request.form["name"]
+        plant.schedule = int(request.form["schedule"])
+        db.session.commit()
+        return redirect("/my_plants")
+
+    return render_template("edit_plant.html", plant=plant)
+
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
