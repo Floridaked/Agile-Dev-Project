@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Details</title>
+    <title>Add Plant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -17,11 +17,17 @@
     </nav>
 
     <main>
-        <h1>{{ data.name }}</h1>
-        <p><strong>Water every:</strong> {{ data.schedule }} days</p>
-        <button>Mark as Watered</button>
-        <form action="{{ url_for('delete_plant', name=data.name)}}" method="POST">
-            <input type="submit" value="Delete Plant">
+        <h1>Add a New Plant</h1>
+        <form action="{{ url_for('add_plant_page') }}" method="POST">
+            <label for="name">Plant Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="schedule">Watering Frequency (days):</label><br>
+            <input type="number" id="schedule" name="schedule" required><br><br>
+
+        
+
+            <input type="submit" value="Add Plant">
         </form>
     </main>
 </body>
