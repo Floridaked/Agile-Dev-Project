@@ -46,7 +46,7 @@
         <div class="card">
             <h2>{{ plant.name }}</h2>
             <p>Water every {{ plant.schedule }} days</p>
-            <a href="{{ url_for('plant_detail', name=plant.name) }}">View Details</a>
+            <a href="{{ url_for('plant_detail', id=plant.id) }}">View Details</a>
         </div>
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
