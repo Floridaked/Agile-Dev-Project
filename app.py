@@ -24,13 +24,23 @@ def categories():
 
     return render_template("plants.html", data=records)
 
-@app.route("/my_plants/<string:name>") 
-def category_detail(name):     
-    stmt = db.select(Plant).where(Plant.name == name) 
+@app.route("/my_plants/<int:id>") 
+def category_detail(id):     
+    stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
+    if not plant:
+        return "Plant not found", 404
     return render_template("plant_detail.html", data=plant)
 
 
+@app.route("/api/plants", methods=["POST"])
+def add_plant():
+    data = request.json
+    new_plant = Plant(name=data["name"], schedule=data["schedule"])
+    db.session.add(new_plant)
+    db.session.commit()
+    return jsonify(new_plant.to_dict())
+#for adding plants need to create javascript and connect to home.html where we can have add plants form
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
@@ -56,6 +66,20 @@ def edit_plant(id):
         return redirect("/my_plants")
 
     return render_template("edit_plant.html", plant=plant)
+
+
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete_plant(id):
+    stmt = db.select(Plant).where(Plant.id == id)
+    plant = db.session.execute(stmt).scalar()
+    
+    if plant:
+        db.session.delete(plant)
+        db.session.commit()
+    
+    return redirect("/my_plants")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
