@@ -24,10 +24,12 @@ def categories():
 
     return render_template("plants.html", data=records)
 
-@app.route("/my_plants/<string:name>") 
-def category_detail(name):     
-    stmt = db.select(Plant).where(Plant.name == name) 
+@app.route("/my_plants/<int:id>") 
+def category_detail(id):     
+    stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
+    if not plant:
+        return "Plant not found", 404
     return render_template("plant_detail.html", data=plant)
 
 
@@ -38,7 +40,7 @@ def add_plant():
     db.session.add(new_plant)
     db.session.commit()
     return jsonify(new_plant.to_dict())
-#for adding plants need to create javascript and connect to homse.html where we can have add plants form
+#for adding plants need to create javascript and connect to home.html where we can have add plants form
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
@@ -66,16 +68,16 @@ def edit_plant(id):
     return render_template("edit_plant.html", plant=plant)
 
 
-@app.route("/delete/<string:name>", methods=["POST"])
-def delete_plant(name):
-    stmt = db.select(Plant).where(Plant.name == name)
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete_plant(id):
+    stmt = db.select(Plant).where(Plant.id == id)
     plant = db.session.execute(stmt).scalar()
-    db.session.delete(plant)
-    db.session.commit()
     
-    statement = db.select(Plant)
-    records = db.session.execute(statement).scalars()
-    return render_template("plants.html", data=records)
+    if plant:
+        db.session.delete(plant)
+        db.session.commit()
+    
+    return redirect("/my_plants")
 
 
 
