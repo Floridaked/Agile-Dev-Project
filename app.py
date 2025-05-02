@@ -31,6 +31,14 @@ def category_detail(name):
     return render_template("plant_detail.html", data=plant)
 
 
+@app.route("/api/plants", methods=["POST"])
+def add_plant():
+    data = request.json
+    new_plant = Plant(name=data["name"], schedule=data["schedule"])
+    db.session.add(new_plant)
+    db.session.commit()
+    return jsonify(new_plant.to_dict())
+#for adding plants need to create javascript and connect to homse.html where we can have add plants form
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
@@ -56,6 +64,20 @@ def edit_plant(id):
         return redirect("/my_plants")
 
     return render_template("edit_plant.html", plant=plant)
+
+
+@app.route("/delete/<string:name>", methods=["POST"])
+def delete_plant(name):
+    stmt = db.select(Plant).where(Plant.name == name)
+    plant = db.session.execute(stmt).scalar()
+    db.session.delete(plant)
+    db.session.commit()
+    
+    statement = db.select(Plant)
+    records = db.session.execute(statement).scalars()
+    return render_template("plants.html", data=records)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
