@@ -16,16 +16,15 @@ db.init_app(app)
 def home(): 
     return render_template("home.html")
 
-
 @app.route("/my_plants") 
-def categories(): 
+def plants(): 
     statement = db.select(Plant).order_by(Plant.schedule.asc())
     records = db.session.execute(statement).scalars()
 
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<int:id>") 
-def category_detail(id):     
+def plant_detail(id):     
     stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
     if not plant:

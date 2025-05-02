@@ -31,7 +31,7 @@
         <h2>🌱 Plant Tracker</h2>
         <div class="nav-links">
             <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('categories') }}">My Plants</a>
+            <a href="{{ url_for('plants') }}">My Plants</a>
         </div>
 
     </nav>
@@ -46,7 +46,7 @@
         <div class="card">
             <h2>{{ plant.name }}</h2>
             <p>Water every {{ plant.schedule }} days</p>
-            <a href="{{ url_for('category_detail', id=plant.id) }}">View Details</a>
+            <a href="{{ url_for('plant_detail', id=plant.id) }}">View Details</a>
         </div>
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
