@@ -28,9 +28,13 @@ def categories():
 def category_detail(id):     
     stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
+    stmt = db.select(Complete).where(Complete.plant_id == id)
+    completed = db.session.execute(stmt).scalars()
+    if not completed:
+        completed = "No water logs"
     if not plant:
         return "Plant not found", 404
-    return render_template("plant_detail.html", data=plant)
+    return render_template("plant_detail.html", data=plant, complete=completed)
 
 
 @app.route("/api/plants", methods=["POST"])
@@ -77,6 +81,17 @@ def delete_plant(id):
         db.session.delete(plant)
         db.session.commit()
     
+    return redirect("/my_plants")
+
+@app.route("/watered/<int:id>", methods=["POST"])
+def water_plant(id):
+    stmt = db.select(Plant).where(Plant.id == id)
+    plant = db.session.execute(stmt).scalar()
+
+    if plant:
+        plant.watered = True
+        plant.completed()
+        db.session.commit()
     return redirect("/my_plants")
 
 
