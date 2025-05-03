@@ -4,6 +4,7 @@ from db import db
 from models import *
 from datetime import datetime as dt
 from pathlib import Path
+import requests
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -20,11 +21,10 @@ def home():
 def plants(): 
     statement = db.select(Plant).order_by(Plant.schedule.asc())
     records = db.session.execute(statement).scalars()
-
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<int:id>") 
-def plant_detail(id):     
+def plant_detail(id):   
     stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
     if not plant:
@@ -78,6 +78,53 @@ def delete_plant(id):
     
     return redirect("/my_plants")
 
+api_key = "sk-mpir681573d064bfb10191"
+
+def get_plant_info(query):
+    url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return {"data": []}
+
+def get_plant_details(id):
+    url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return {"data": []}
+
+@app.route("/plant/<int:id>")
+def plant_info(id):
+    detail_data = get_plant_details(id)
+    if "data" not in detail_data or not detail_data["data"]:
+        return "No plant details found", 404
+
+    plant = detail_data["data"][0]
+    # Default values
+    watering = "No info available."
+    sunlight = "No info available."
+    pruning = "No info available."
+
+    for section in plant.get("section", []):
+        if section["type"] == "watering":
+            watering = section["description"]
+        elif section["type"] == "sunlight":
+            sunlight = section["description"]
+        elif section["type"] == "pruning":
+            pruning = section["description"]
+
+    return render_template("plant_info.html", data=plant, watering=watering, sunlight=sunlight, pruning=pruning)
+
+@app.route("/search_plant")
+def search_plant():
+    return render_template("search_plant.html")
+
+@app.route("/results", methods=["POST"])
+def results():
+    query = request.form["query"]
+    data = get_plant_info(query)
+    return render_template("search_results.html", data=data, query=query)
 
 
 if __name__ == "__main__":
