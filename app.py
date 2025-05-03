@@ -4,7 +4,7 @@ from db import db
 from models import *
 from datetime import datetime as dt
 from pathlib import Path
-import requests
+import requests as http_requests
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -82,14 +82,14 @@ api_key = "sk-mpir681573d064bfb10191"
 
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
-    response = requests.get(url)
+    response = http_requests.get(url)
     if response.status_code == 200:
         return response.json()
     return {"data": []}
 
 def get_plant_details(plant_id):
     url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={plant_id}"
-    response = requests.get(url)
+    response = http_requests.get(url)
     if response.status_code == 200:
         return response.json()
     return {"data": []}
