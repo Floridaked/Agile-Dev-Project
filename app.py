@@ -4,7 +4,7 @@ from db import db
 from models import *
 from datetime import datetime as dt
 from pathlib import Path
-import requests
+import requests as http_requests
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -19,14 +19,12 @@ def home():
 
 @app.route("/my_plants") 
 def plants(): 
-def plants(): 
     statement = db.select(Plant).order_by(Plant.schedule.asc())
     records = db.session.execute(statement).scalars()
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<int:id>") 
-def plant_detail(id):
-def plant_detail(id):     
+def plant_detail(id):    
     stmt = db.select(Plant).where(Plant.id == id) 
     plant = db.session.execute(stmt).scalar()
     if not plant:
