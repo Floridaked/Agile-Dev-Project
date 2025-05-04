@@ -17,12 +17,23 @@
     <main>
         <h1>{{ data.name }}</h1>
         <p><strong>Water every:</strong> {{ data.schedule }} days</p>
-        <button>Mark as Watered</button>
+        <form action="{{ url_for('water_plant', id=data.id)}}" method="POST">
+            <input type="submit" value="Mark as Watered">
+        </form>
         
         <!-- Edit Button -->
         <form action="{{ url_for('edit_plant', id=data.id) }}" method="GET" style="display: inline;">
             <button type="submit" class="edit-btn">✏️ Edit Plant</button>
         </form>
+        <form action="{{ url_for('delete_plant', id=data.id)}}" method="POST">
+            <input type="submit" value="Delete Plant">
+        </form>
+        
+        {% for completed in complete %}
+        
+            <h4>{{ completed.date }}</h4>
+    
+        {% endfor %}
     </main>
 </body>
 </html>
