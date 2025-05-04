@@ -152,7 +152,6 @@ main {
     padding: 0;
     margin: 2rem 0;
   }
-  
   .result-item {
     background-color: #f7fbf5;
     padding: 1rem;
@@ -161,13 +160,11 @@ main {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     text-align: left;
   }
-  
   .result-item img {
     margin-top: 0.5rem;
     max-width: 100%;
     border-radius: 6px;
   }
-  
   .result-item a {
     display: inline-block;
     margin-top: 0.5rem;
@@ -175,7 +172,26 @@ main {
     text-decoration: none;
     font-weight: bold;
   }
-  
   .result-item a:hover {
     text-decoration: underline;
   }
+  .button-link {
+    display: inline-block;
+    height: 40px;
+    padding: 0 1rem;
+    font-size: 1rem;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    background-color: #a3c9a8;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-sizing: border-box;
+    margin-top: 1rem;
+  }
+  .button-link:hover {
+    background-color: #89b489;
+  }
+  
