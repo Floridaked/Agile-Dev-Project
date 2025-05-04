@@ -115,7 +115,6 @@ def plant_info(id):
         return "No plant details found", 404
 
     plant = detail_data["data"][0]
-    # Default values
     watering = "No info available."
     sunlight = "No info available."
     pruning = "No info available."
@@ -139,9 +138,6 @@ def results():
     query = request.form["query"]
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
-
-
-
 
 
 if __name__ == "__main__":
