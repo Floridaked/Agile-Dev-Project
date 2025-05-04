@@ -98,7 +98,7 @@ main {
   
   /*search plant page*/
   .search-container {
-    max-width: 500px;
+    max-width: 700px;
     margin: 4rem auto 0; 
     padding: 2rem;
     background-color: white;
@@ -119,4 +119,38 @@ main {
     font-size: 1rem;
     border-radius: 6px;
     border: 1px solid #ccc;
+  }
+
+  /*search results*/
+  .results-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  
+  .result-item {
+    background-color: #f7fbf5;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+  
+  .result-item img {
+    margin-top: 0.5rem;
+    max-width: 100%;
+    border-radius: 6px;
+  }
+  
+  .result-item a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #356859;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .result-item a:hover {
+    text-decoration: underline;
   }
