@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
 
 </head>
-<body>
+<body class="plants-bg">
     <nav>
         <h2>🌱 Sprout Spot</h2>
         <div class="nav-links">
@@ -36,6 +36,7 @@
                     <h2>{{ plant.name }}</h2>
                     <p class="schedule">Water every {{ plant.schedule }} days</p>
                 </div>
+                <button class="water-btn">Water now</button>
             </div>
         </a>
         {% else %}

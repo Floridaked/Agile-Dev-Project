@@ -16,7 +16,7 @@
   
   nav {
     width: 100%;
-    background-color: #dbe8d4;
+    background-color: whitesmoke;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -92,7 +92,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: white;
+    background-color: whitesmoke;
     padding: 20px;
     height: 125px;
     border-radius: 12px;
@@ -111,6 +111,7 @@ main {
   
   .card-link .card:hover {
     transform: scale(1.01);
+    background-color: white;
   }
   
   /*search plant page*/
@@ -266,4 +267,24 @@ main {
 .info .schedule {
   margin-top: 8px;
   font-size: 0.9rem;
+}
+.water-btn {
+  background-color: #a3c9a8;;
+  color: black;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-left: 1rem;
+  margin-right: auto;
+}
+.water-btn:hover {
+  background-color: #89b489;
+}
+.plants-bg {
+  background-image: url("../images/plantsbg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
 }
