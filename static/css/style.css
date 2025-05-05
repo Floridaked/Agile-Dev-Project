@@ -70,7 +70,7 @@ main {
   
   h1 {
     margin-bottom: 1rem;
-    color: #356859;
+    color: black;
   }
   
   button, input[type="submit"] {
@@ -224,7 +224,7 @@ main {
     background-color: #c7d7c1;
     color: black;
     padding: 10px 16px;
-    border-radius: 6px;
+    border-radius: 25px;
     text-decoration: none;
     font-size: 1rem;
 }
@@ -236,6 +236,7 @@ main {
   margin-bottom: 3rem;
   margin: 1.5rem auto;
   max-width: 800px;
+  border-radius: 25px;
 }
 
 .add-water-btn {
@@ -244,7 +245,7 @@ main {
   background-color: whitesmoke;
   color: black;
   padding: 1rem;
-  border-radius: 15px;
+  border-radius: 25px;
   text-decoration: none;
   border-style: solid;
   border-width: 3px;
@@ -274,7 +275,7 @@ main {
   background-color: #c7d7c1;
   color: black;
   padding: 10px 16px;
-  border-radius: 6px;
+  border-radius: 25px;
   text-decoration: none;
   font-size: 1rem;
   margin-left: 1rem;
@@ -304,14 +305,7 @@ main {
   margin: 4rem auto;
   padding: 2rem;
 }
-.back-arrow {
-  font-size: 2rem;
-  text-decoration: none;
-  color: #aaa;
-  position: absolute;
-  top: -40px;
-  left: -40px;
-}
+
 
 .plant-card {
   background-color: #dfe7dc;
@@ -350,10 +344,15 @@ main {
   background-color: #f5f7cb;
   color: #444;
 }
-
+.pill-btn.edit:hover {
+  background-color: #fafbe0;
+}
 .pill-btn.delete {
   background-color: #f5f7cb;
   color: #444;
+}
+.pill-btn.delete:hover {
+  background-color: #f4b6b6;
 }
 
 .pill-btn.water-now {
@@ -363,12 +362,16 @@ main {
   background-color: #c7d7c1;
   color: #444;
 }
+.pill-btn.water-now:hover {
+  background-color: #b9cbd9;
+}
 
 .log-box {
   background-color: #f4f8f3;
   border-radius: 15px;
   padding: 1rem 1.5rem;
   margin-top: 2rem;
+  height: 400px;
 }
 
 .log-box h3 {
