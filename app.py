@@ -5,6 +5,13 @@ from models import *
 from datetime import datetime as dt
 from pathlib import Path
 import requests as http_requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+# Ensure the .env file is in the same directory as this script
+# or provide the full path to the .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -78,7 +85,7 @@ def delete_plant(id):
     
     return redirect("/my_plants")
 
-api_key = "sk-mpir681573d064bfb10191"
+api_key = os.getenv("API_KEY")
 
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
