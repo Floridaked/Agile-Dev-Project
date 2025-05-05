@@ -48,7 +48,7 @@ nav a {
 
   
 nav a:hover {
-  background-color: #cbe0b4;
+  background-color: #c7d7c1;
 }
 
   
@@ -92,7 +92,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: whitesmoke;
+    background-color: #dfe7dc;
     padding: 20px;
     height: 125px;
     border-radius: 12px;
@@ -111,7 +111,7 @@ main {
   
   .card-link .card:hover {
     transform: scale(1.01);
-    background-color: white;
+    background-color: #c7d7c1;
   }
   
   /*search plant page*/
@@ -221,7 +221,7 @@ main {
     margin-bottom: 2rem;
 }
 .add-btn {
-    background-color: #a3c9a8;;
+    background-color: #c7d7c1;
     color: black;
     padding: 10px 16px;
     border-radius: 6px;
@@ -241,12 +241,14 @@ main {
 .add-water-btn {
   display: block;
   width: 100%;             
-  background-color: #a3c9a8;
+  background-color: whitesmoke;
   color: black;
   padding: 1rem;
   border-radius: 15px;
   text-decoration: none;
-
+  border-style: solid;
+  border-width: 3px;
+  border-color: #c7d7c1;
   font-size: 1.1rem;
   text-align: center;
   box-sizing: border-box;
@@ -254,7 +256,7 @@ main {
 }
 
 .add-water-btn:hover {
-  background-color: #89b489;
+  background-color: white;
 }
 .info {
   padding-left: 15px;
@@ -269,7 +271,7 @@ main {
   font-size: 0.9rem;
 }
 .water-btn {
-  background-color: #a3c9a8;;
+  background-color: #c7d7c1;
   color: black;
   padding: 10px 16px;
   border-radius: 6px;
@@ -279,7 +281,7 @@ main {
   margin-right: auto;
 }
 .water-btn:hover {
-  background-color: #89b489;
+  background-color: #b9cbd9;
 }
 .plants-bg {
   background-image: url("../images/plantsbg.png");
@@ -288,3 +290,103 @@ main {
   background-position: center center;
   background-attachment: fixed;
 }
+
+/*details page */
+.details-bg {
+  background-image: url("../images/detailsbg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+.plant-detail-container {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+}
+.back-arrow {
+  font-size: 2rem;
+  text-decoration: none;
+  color: #aaa;
+  position: absolute;
+  top: -40px;
+  left: -40px;
+}
+
+.plant-card {
+  background-color: #dfe7dc;
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.details {
+  margin-bottom: 1rem;
+  color: #3d3d3d;
+}
+
+.details h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.pill-btn {
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.pill-btn.edit {
+  background-color: #f5f7cb;
+  color: #444;
+}
+
+.pill-btn.delete {
+  background-color: #f5f7cb;
+  color: #444;
+}
+
+.pill-btn.water-now {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background-color: #c7d7c1;
+  color: #444;
+}
+
+.log-box {
+  background-color: #f4f8f3;
+  border-radius: 15px;
+  padding: 1rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.log-box h3 {
+  margin-top: 0;
+}
+
+.log-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.log-box li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+
+.log-status {
+  color: #5c5c3d;
+}
+
