@@ -115,11 +115,18 @@ main {
   }
   
   /*search plant page*/
+  .search-bg {
+    background-image: url("../images/addplantbg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
   .search-container {
     max-width: 700px;
     margin: 4rem auto 0; 
     padding: 2rem;
-    background-color: white;
+    background-color: whitesmoke;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
@@ -142,13 +149,14 @@ main {
   }
   .search-form button {
     height: 40px;
+    width: 125px;
     padding: 0 1rem;
     font-size: 1rem;
     line-height: 40px;       
-    border-radius: 6px;
+    border-radius: 25px;
     border: none;
-    background-color: #a3c9a8;
-    color: white;
+    background-color: #c7d7c1;
+    color: black;
     cursor: pointer;
     transition: background 0.2s;
     box-sizing: border-box;
@@ -163,6 +171,7 @@ main {
     margin-bottom: 1rem;
     max-width: 600px;
   }
+  
 
   /*search results*/
   .results-list {
@@ -247,9 +256,7 @@ main {
   padding: 1rem;
   border-radius: 25px;
   text-decoration: none;
-  border-style: solid;
-  border-width: 3px;
-  border-color: #c7d7c1;
+
   font-size: 1.1rem;
   text-align: center;
   box-sizing: border-box;
