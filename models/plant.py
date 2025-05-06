@@ -11,6 +11,7 @@ class Plant(db.Model):
     location = db.mapped_column(db.String, default="outdoor")
     watered = db.mapped_column(db.Boolean, default=False)
     completes = db.relationship("Complete", back_populates="plant")
+    
 
     def completed(self):
         current_time = datetime.now()
