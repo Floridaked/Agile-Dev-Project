@@ -32,12 +32,10 @@ def plants():
 
 @app.route("/my_plants/<int:id>") 
 def plant_detail(id):   
-    stmt = db.select(Plant).where(Plant.id == id) 
-    plant = db.session.execute(stmt).scalar()
-    stmt = db.select(Complete).where(Complete.plant_id == id)
-    completed = db.session.execute(stmt).scalars()
-    if not completed:
-        completed = "No water logs"
+    stmt        = db.select(Plant).where(Plant.id == id) 
+    plant       = db.session.execute(stmt).scalar()
+    stmt        = db.select(Complete).where(Complete.plant_id == id)
+    completed   = list(db.session.execute(stmt).scalars())
     if not plant:
         return "Plant not found", 404
     return render_template("plant_detail.html", data=plant, complete=completed)
@@ -149,10 +147,9 @@ def water_plant(id):
     plant = db.session.execute(stmt).scalar()
 
     if plant:
-        plant.watered = True
         plant.completed()
         db.session.commit()
-    return redirect("/my_plants")
+    return redirect("/my_plants/" + str(id))
 
 
 
