@@ -10,17 +10,18 @@ class Plant(db.Model):
     mood = db.mapped_column(db.Boolean, default=True)
     location = db.mapped_column(db.String, default="outdoor")
     watered = db.mapped_column(db.Boolean, default=False)
-    
+    last_watered = db.mapped_column(db.String, default="Never")
+    water_count = db.mapped_column(db.Integer, default=0)
     completes = db.relationship("Complete", back_populates="plant")
     user_id = db.mapped_column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     owner = db.relationship("User", back_populates="plants")
 
     def completed(self):
-        current_time = datetime.now()
-        if self.watered == True:
-            new_complete = Complete(date=current_time, plant=self)
-            db.session.add(new_complete)
-            self.watered = True
+        current_time = datetime.now().strftime("%B %d, %Y at %I:%M%p")
+        new_complete = Complete(date=current_time, plant=self)
+        db.session.add(new_complete)
+        self.watered = True
+        self.water_count += 1
          
 
         
