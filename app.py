@@ -87,8 +87,17 @@ def delete_plant(id):
     
     return redirect("/my_plants")
 
-api_key = os.getenv("API_KEY")
+@app.route("/watered/<int:id>", methods=["POST"])
+def water_plant(id):
+    stmt = db.select(Plant).where(Plant.id == id)
+    plant = db.session.execute(stmt).scalar()
 
+    if plant:
+        plant.completed()
+        db.session.commit()
+    return redirect("/my_plants/" + str(id))
+
+api_key = "sk-mpir681573d064bfb10191"
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
     response = http_requests.get(url)
@@ -96,21 +105,20 @@ def get_plant_info(query):
         return response.json()
     return {"data": []}
 
-def get_plant_details(plant_id):
-    url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={plant_id}"
+def get_plant_details(id):
+    url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={id}"
     response = http_requests.get(url)
     if response.status_code == 200:
         return response.json()
     return {"data": []}
 
-@app.route("/plant/<int:plant_id>")
-def plant_info(plant_id):
-    detail_data = get_plant_details(plant_id)
+@app.route("/plant/<int:id>")
+def plant_info(id):
+    detail_data = get_plant_details(id)
     if "data" not in detail_data or not detail_data["data"]:
         return "No plant details found", 404
 
     plant = detail_data["data"][0]
-    # Default values
     watering = "No info available."
     sunlight = "No info available."
     pruning = "No info available."
@@ -123,13 +131,7 @@ def plant_info(plant_id):
         elif section["type"] == "pruning":
             pruning = section["description"]
 
-    return render_template(
-        "plant_info.html",
-        data=plant,
-        watering=watering,
-        sunlight=sunlight,
-        pruning=pruning
-    )
+    return render_template("plant_info.html", data=plant, watering=watering, sunlight=sunlight, pruning=pruning)
 
 @app.route("/search_plant")
 def search_plant():
@@ -140,17 +142,7 @@ def results():
     query = request.form["query"]
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
-
-@app.route("/watered/<int:id>", methods=["POST"])
-def water_plant(id):
-    stmt = db.select(Plant).where(Plant.id == id)
-    plant = db.session.execute(stmt).scalar()
-
-    if plant:
-        plant.completed()
-        db.session.commit()
-    return redirect("/my_plants/" + str(id))
-
+>>>>>>>>> Temporary merge branch 2
 
 
 if __name__ == "__main__":
