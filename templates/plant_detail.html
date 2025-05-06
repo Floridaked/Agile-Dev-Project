@@ -31,16 +31,29 @@
                         <form action="{{ url_for('delete_plant', id=data.id)}}" method="POST">
                             <button type="submit" class="pill-btn delete">Delete</button>
                         </form>
+                        <form action="{{ url_for('water_plant', id=data.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="pill-btn water-now">Water now</button>
+                        </form> 
                     </div>
                 </div>
-                <button class="pill-btn water-now">Water now</button>
+
+
 
                 <div class="log-box">
                     <h3>Watering log</h3>
                     <ul>
-                        {% for entry in data.watering_log %}
-                        <li>{{ entry.date }} <span class="log-status">{{ entry.status }}</span></li>
+                        {% if complete|length > 0 %}
+                    <p>You have watered this plant {{ data.water_count }} times.</p>
+                    <h3>Watering Dates:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        {% for completed in complete %}
+                            <li>{{ completed.date }}</li>
                         {% endfor %}
+                    </ul>
+                        {% else %}
+                            <p>You have not watered this plant yet.</p>
+                            <p>No watering history available.</p>
+                        {% endif %}
                     </ul>
                 </div>
         </div>
