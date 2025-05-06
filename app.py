@@ -43,7 +43,7 @@ def plant_detail(id):
 
 @app.route("/api/plants", methods=["POST"])
 def add_plant():
-    data = http_request.json
+    data = http_requests.json
     new_plant = Plant(name=data["name"], schedule=data["schedule"])
     db.session.add(new_plant)
     db.session.commit()
@@ -52,9 +52,9 @@ def add_plant():
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
-    if http_request.method == "POST":
-        name = http_request.form["name"]
-        schedule = int(http_request.form["schedule"])
+    if request.method == "POST":  # Use Flask's request object
+        name = request.form["name"]
+        schedule = int(request.form["schedule"])
         new_plant = Plant(name=name, schedule=schedule)
         db.session.add(new_plant)
         db.session.commit()
@@ -67,9 +67,9 @@ def edit_plant(id):
     if not plant:
         return "Plant not found", 404
 
-    if http_request.method == "POST":
-        plant.name = http_request.form["name"]
-        plant.schedule = int(http_request.form["schedule"])
+    if request.method == "POST":  # Use Flask's request object
+        plant.name = request.form["name"]
+        plant.schedule = int(request.form["schedule"])
         db.session.commit()
         return redirect("/my_plants")
 
@@ -100,7 +100,7 @@ def water_plant(id):
 api_key = "sk-mpir681573d064bfb10191"
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
-    response = http_requests.get(url)
+    response = http_requests.get(url)  # Corrected typo
     if response.status_code == 200:
         return response.json()
     return {"data": []}
@@ -139,7 +139,7 @@ def search_plant():
 
 @app.route("/results", methods=["POST"])
 def results():
-    query = http_request.form["query"]
+    query = request.form["query"]  # Use Flask's request object
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
 
