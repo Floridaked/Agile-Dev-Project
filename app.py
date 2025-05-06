@@ -142,7 +142,7 @@ def results():
     query = request.form["query"]
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
->>>>>>>>> Temporary merge branch 2
+
 
 
 if __name__ == "__main__":
