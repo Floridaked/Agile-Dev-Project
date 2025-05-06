@@ -18,6 +18,14 @@
         </div>
 
     </nav>
+  
+    <div class="reminder">  
+        {% for plant in data %}
+            {% if plant.count_down() <= 0 %}
+            <div class=reminder-box> Water {{ plant.name }} today</div>
+            {% endif %}
+        {% endfor %}
+    </div>
 
     <main>
         <div class="top-bar">
@@ -29,14 +37,21 @@
         <div class="card">
             <h2>{{ plant.name }}</h2>
             <p>Water every {{ plant.schedule }} days</p>
+
+            {% if plant.count_down() > 0 %}
+                <p>Water in {{plant.count_down()}} days</p>
+            {% elif plant.count_down() == 0 %}
+                <p>Water today</p>
+            {% else%}
+                <p>Water {{ - plant.count_down()}} days late</p>
+            {% endif%}
             <a href="{{ url_for('plant_detail', id=plant.id) }}">View Details</a>
         </div>
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}
     </main>
-  
-    
+
 </body>
 </html>
 

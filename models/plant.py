@@ -1,6 +1,8 @@
 from db import db
 from datetime import datetime
 from .complete import Complete
+from sqlalchemy import desc
+
 
 class Plant(db.Model):
     __tablename__="plant"
@@ -18,11 +20,16 @@ class Plant(db.Model):
             new_complete = Complete(date=current_time, plant=self)
             db.session.add(new_complete)
             self.watered = True
-         
 
+    def count_down(self):
+        if not self.completes:    
+            # if the user never water the plant, they should water today
+            return 0
         
-
-    
+        last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
+        days_since_last_watered = (datetime.now().date() - datetime.strptime(last_watered.date, "%Y-%m-%d %H:%M:%S.%f").date()).days
+        count_down = self.schedule - days_since_last_watered
+        return count_down
 
 
     

@@ -27,7 +27,7 @@ def home():
 @app.route("/my_plants") 
 def plants(): 
     statement = db.select(Plant).order_by(Plant.schedule.asc())
-    records = db.session.execute(statement).scalars()
+    records = db.session.execute(statement).scalars().all()
     return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<int:id>") 
