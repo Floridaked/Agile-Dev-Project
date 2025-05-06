@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h2>🌱 Plant Tracker</h2>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('plants') }}">My Plants</a>
+            <a href="{{ url_for('search_plant') }}">Search</a>
+        </div>
+    </nav>
+    <h1>Results for "{{ query }}"</h1>
+
+    {% if data and data["data"] %}
+    <ul>
+        {% for plant in data["data"] %}
+        <li>
+            <strong>{{ plant["common_name"] or "No common name" }}</strong><br>
+            Scientific: {{ plant["scientific_name"] }}<br>
+        
+            {% if 'default_image' in plant and plant['default_image'] %}
+            <img src="{{ plant['default_image']['thumbnail'] }}" alt="Image"><br>
+
+            {% endif %}
+        
+            <a href="/plant/{{ plant['id'] }}">View Details</a>
+        </li><br>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No plants found.</p>
+    {% endif %}
+
+    <a href="/search_plant">← Search Again</a>
+</body>
+
+</html>
