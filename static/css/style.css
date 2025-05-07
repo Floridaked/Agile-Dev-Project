@@ -400,3 +400,11 @@ main {
   color: #5c5c3d;
 }
 
+
+  .home-bg {
+    background-image: url("../Images/background-home.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }

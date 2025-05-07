@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Tracker - Home</title>
+    <title>The Sprout Spot - Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <style>
@@ -11,21 +11,24 @@
         a.button-link {
             background-color: #89b489;
             color: white;
-            padding: 12px 24px;
+            padding: 0px 24px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 1.1rem;
             margin-top: 20px;
+            border-radius: 25px;
         }
         a.button-link:hover {
             background-color: #729c72;
 
         }
+        
     </style>
 </head>
-<body>
+<body class ="home-bg">
     <main class="home-main">
-        <h1>🌿 Welcome to Plant Tracker 🌿</h1>
+        
+        <h1>🌿 Welcome to The Sprout Spot 🌿</h1>
         <p>Never forget to water your plants again!</p>
         <a class="button-link" href="{{ url_for('plants') }}">Go to My Plants</a>
     </main>
