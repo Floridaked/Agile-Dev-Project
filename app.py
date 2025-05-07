@@ -68,9 +68,12 @@ def add_plant_page():
     if request.method == "POST":
         name = request.form["name"]
         schedule = int(request.form["schedule"])
+        plant_type = request.form["plant_type"]
+        last_watered =  request.form["last_watered"]
         user_id = session["user_id"]
+        # add last water date
 
-        new_plant = Plant(name=name, schedule=schedule, user_id=user_id)
+        new_plant = Plant(name=name, schedule=schedule, user_id=user_id, plant_type=plant_type)
         db.session.add(new_plant)
         db.session.commit()
         return redirect("/my_plants")
