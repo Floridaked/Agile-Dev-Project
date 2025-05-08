@@ -429,3 +429,31 @@ main {
   background-position: center center;
   background-attachment: fixed;
 }
+
+.log-in {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* subtract nav height */
+  text-align: center;
+  padding: 2rem;
+}
+
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* subtract nav height */
+  text-align: center;
+  padding: 2rem;
+}
+
+.add-plant-bg {
+  background-image: url("../Images/login-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
