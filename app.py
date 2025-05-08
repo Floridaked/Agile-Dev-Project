@@ -57,13 +57,12 @@ def add_plant():
     name = request.form.get("name")
     schedule = request.form.get("schedule")
 
-    if not name or not schedule:
-        return jsonify({"error": "Missing required fields"}), 400
-
-    new_plant = Plant(name=name, schedule=int(schedule), user_id=session["user_id"])
+    new_plant = Plant(name=name, schedule=int(schedule), user_id=session['user_id'])
     db.session.add(new_plant)
     db.session.commit()
-    return jsonify(new_plant.to_dict())
+
+    # Redirect to the plants page after adding the plant
+    return redirect(url_for('plants'))
 
 
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
