@@ -18,7 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.instance_path = Path(".").resolve()
 
 db.init_app(app)
-
+app.secret_key = 'secret-key????'
 
 @app.route("/") 
 def home(): 
@@ -26,9 +26,17 @@ def home():
 
 @app.route("/my_plants") 
 def plants(): 
-    statement = db.select(Plant).order_by(Plant.schedule.asc())
-    records = db.session.execute(statement).scalars()
-    return render_template("plants.html", data=records)
+   
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    statement = db.select(Plant).where(Plant.user_id == user_id).order_by(Plant.schedule.asc())
+    records = db.session.execute(statement).scalars().all()      # .all() to allow looping
+    statement = db.select(User).where(User.id == user_id)
+    user = db.session.execute(statement).scalar()
+
+    return render_template("plants.html", data=records, user=user)
 
 @app.route("/my_plants/<int:id>") 
 def plant_detail(id):   
@@ -43,11 +51,16 @@ def plant_detail(id):
 
 @app.route("/api/plants", methods=["POST"])
 def add_plant():
+    if 'user_id' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
     data = request.json
-    new_plant = Plant(name=data["name"], schedule=data["schedule"])
+    new_plant = Plant(name=data["name"], schedule=data["schedule"], user_id=session["user_id"])
     db.session.add(new_plant)
     db.session.commit()
     return jsonify(new_plant.to_dict())
+
+
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
 
 @app.route("/add_plant", methods=["GET", "POST"])
@@ -55,7 +68,9 @@ def add_plant_page():
     if request.method == "POST":
         name = request.form["name"]
         schedule = int(request.form["schedule"])
-        new_plant = Plant(name=name, schedule=schedule)
+        user_id = session["user_id"]
+
+        new_plant = Plant(name=name, schedule=schedule, user_id=user_id)
         db.session.add(new_plant)
         db.session.commit()
         return redirect("/my_plants")
@@ -142,6 +157,51 @@ def results():
     query = request.form["query"]
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
+
+
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        existing_user = db.session.execute(db.select(User).where(User.username == username)).scalar()
+
+        if existing_user:
+            return "User already exists", 400
+        new_user = User(username=username)
+        new_user.set_password(password)
+
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = db.session.execute(db.select(User).where(User.username == username)).scalar()
+
+        if user and user.check_password(password):
+            session['user_id'] = user.id
+            session['username'] = user.username
+            return redirect(url_for('plants'))
+        return "Invalid credentials", 401
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 
 
