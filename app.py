@@ -69,12 +69,13 @@ def add_plant_page():
         name = request.form["name"]
         schedule = int(request.form["schedule"])
         plant_type = request.form["plant_type"]
-        last_watered =  request.form["last_watered"]
+        first_watered =  request.form["first_watered"]
+        first_watered = dt.strptime(first_watered, "%Y-%m-%d").strftime("%B %d, %Y") + " at 12:00AM"    
         user_id = session["user_id"]
-        # add last water date
-
         new_plant = Plant(name=name, schedule=schedule, user_id=user_id, plant_type=plant_type)
+        first_watering_record = Complete(plant=new_plant, date=first_watered)
         db.session.add(new_plant)
+        db.session.add(first_watering_record)
         db.session.commit()
         return redirect("/my_plants")
     return render_template("add_plant.html")
