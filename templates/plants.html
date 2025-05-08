@@ -19,13 +19,7 @@
 
     </nav>
   
-    <div class="reminder">  
-        {% for plant in data %}
-            {% if plant.count_down() <= 0 %}
-            <div class=reminder-box> Water {{ plant.name }} today</div>
-            {% endif %}
-        {% endfor %}
-    </div>
+  
 
     <main>
         
@@ -34,25 +28,36 @@
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
         <div class="center-btn">
-            <a href=# class="add-water-btn">Notification</a>
+            <div class="reminder">  
+                {% for plant in data %}
+                    {% if plant.count_down() <= 0 %}
+                    <div class=reminder-box> Water {{ plant.name }} today</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
 
         {% for plant in data %}
         <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
             <div class="card">
-                <div class="info">
+                <div class="card-left">
                     <h2>{{ plant.name }}</h2>
-                    <p class="schedule">Water every {{ plant.schedule }} days</p>
-
-                    {% if plant.count_down() > 0 %}
-                        <p>Water in {{plant.count_down()}} days</p>
-                    {% elif plant.count_down() == 0 %}
-                        <p>Water today</p>
-                    {% else%}
-                        <p>Water {{ - plant.count_down()}} days late</p>
-                    {% endif%}
                 </div>
-                <button class="water-btn">Water now</button>
+                    
+
+                <div class="card-center">
+                    {% if plant.count_down() > 0 %}
+                    <p>Water in {{plant.count_down()}} days</p>
+                {% elif plant.count_down() == 0 %}
+                    <p>Water today</p>
+                {% else%}
+                    <p>Water {{ - plant.count_down()}} days late</p>
+                {% endif%}
+                </div>
+                
+                <div class="card-right">
+                    <button class="water-btn">Water now</button>
+                </div>
             </div>
         </a>
         {% else %}

@@ -54,8 +54,13 @@ def add_plant():
     if 'user_id' not in session:
         return jsonify({"error": "Unauthorized"}), 401
 
-    data = http_requests.json
-    new_plant = Plant(name=data["name"], schedule=data["schedule"], user_id=session["user_id"])
+    name = request.form.get("name")
+    schedule = request.form.get("schedule")
+
+    if not name or not schedule:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    new_plant = Plant(name=name, schedule=int(schedule), user_id=session["user_id"])
     db.session.add(new_plant)
     db.session.commit()
     return jsonify(new_plant.to_dict())
