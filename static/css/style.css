@@ -148,7 +148,7 @@ main {
   
   /*search plant page*/
   .search-bg {
-    background-image: url("../images/addplantbg.png");
+    background-image: url("../images/searchbg.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -268,7 +268,13 @@ main {
     width: 500px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+  .addplant-bg {
+    background-image: url("../images/addplantbg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
   
   
   /*my plants page */
@@ -480,7 +486,7 @@ main {
 
 /*plant info page */
   .plantinfo-bg {
-    background-image: url("../images/addplantbg.png");
+    background-image: url("../images/infobg.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
