@@ -78,7 +78,7 @@ main {
     border: none;
     padding: 10px 20px;
     color: white;
-    border-radius: 6px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 1rem;
     margin-top: 1rem;
@@ -401,10 +401,31 @@ main {
 }
 
 
-  .home-bg {
-    background-image: url("../Images/background-home.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-  }
+.home-bg {
+  background-image: url("../Images/background-home.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.home-bg h1 {
+  color: #356859;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.log-in {
+  background-image: url("../Images/login-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.register {
+  background-image: url("../Images/register-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
