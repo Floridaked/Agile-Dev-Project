@@ -113,6 +113,22 @@ main {
     transform: scale(1.01);
     background-color: #c7d7c1;
   }
+
+  /*add plant page*/
+  .form-container {
+    background: rgba(200, 210, 200, 0.5);
+    padding: 40px;
+    border-radius: 16px;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem; 
+  padding: 2rem;
+}
+
   
   /*search plant page*/
   .search-bg {
