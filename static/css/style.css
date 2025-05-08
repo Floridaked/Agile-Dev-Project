@@ -478,3 +478,11 @@ main {
   color: #5c5c3d;
 }
 
+/*plant info page */
+  .plantinfo-bg {
+    background-image: url("../images/addplantbg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
