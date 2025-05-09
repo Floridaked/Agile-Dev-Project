@@ -8,7 +8,7 @@
 </head>
 <body class="search-bg">
     <nav>
-        <h2>🌱 Sprout Spot</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
           <a href="{{ url_for('home') }}">Home</a>
           <a href="{{ url_for('plants') }}">My Plants</a>
@@ -22,10 +22,10 @@
             <h1>Add a New Plant</h1>
             <form action="{{ url_for('add_plant') }}" method="POST">
                 <label for="name">Plant Name:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
+                <input type="text" id="name" name="name" placeholder="Enter a plant name" required><br><br>
 
                 <label for="plant_type">Type :</label><br>
-                <input type="text" id="plant_type" name="plant_type" required><br><br>
+                <input type="text" id="plant_type" name="plant_type" placeholder="eg. Outdoor" required><br><br>
 
                 <label for="schedule">Watering Frequency (days):</label><br>
                 <input type="number" id="schedule" name="schedule" required><br><br>
