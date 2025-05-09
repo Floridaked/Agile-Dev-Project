@@ -71,6 +71,8 @@ main {
   h1 {
     margin-bottom: 1rem;
     color: black;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #356859;
   }
   
   button, input[type="submit"] {
