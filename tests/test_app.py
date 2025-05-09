@@ -41,7 +41,7 @@ def test_user_password_hashing(init_user):
 
 def test_plant_completed_method(app, init_user):
     with app.app_context():
-        plant = Plant(name="Cactus", schedule=5, user_id=init_user.id)
+        plant = Plant(name="Cactus", schedule=5, user_id=init_user.id, plant_type="flower")
         db.session.add(plant)
         db.session.commit()
 
@@ -54,7 +54,7 @@ def test_plant_completed_method(app, init_user):
 
 def test_plant_count_down(app, init_user):
     with app.app_context():
-        plant = Plant(name="Aloe", schedule=3, user_id=init_user.id)
+        plant = Plant(name="Aloe", schedule=3, user_id=init_user.id, plant_type="flower")
         db.session.add(plant)
         db.session.commit()
         assert plant.count_down() == 0  # never watered, should return 0
@@ -84,13 +84,14 @@ def test_my_plants_requires_login(client):
 def test_add_plant(client, app, init_user):
     with client.session_transaction() as sess:
         sess["user_id"] = init_user.id
+    first_watered_date = datetime.today().strftime("%Y-%m-%d")
 
-    response = client.post("/add_plant", data={"name": "TestPlant", "schedule": 4})
+    response = client.post("/add_plant", data={"name": "TestPlant", "schedule": 4, "plant_type": "flower","first_watered": first_watered_date})
     assert response.status_code == 302  # redirect after adding
 
 def test_water_plant(client, app, init_user):
     with app.app_context():
-        plant = Plant(name="Fern", schedule=7, user_id=init_user.id)
+        plant = Plant(name="Fern", schedule=7, user_id=init_user.id, plant_type="flower")
         db.session.add(plant)
         db.session.commit()
         plant_id = plant.id
@@ -103,9 +104,10 @@ def test_water_plant(client, app, init_user):
 
 def test_plants_when_logged_in(client):
     client.post('/register', data={'username': 'jim', 'password': '123'})
-    client.post('/login', data={'username': 'jim', 'password': '123'},)
-
-    client.post('/add_plant', data={'name': 'Rose', 'schedule': '5'})
+    client.post('/login', data={'username': 'jim', 'password': '123'})
+    first_watered_date = datetime.today().strftime("%Y-%m-%d")
+    
+    client.post('/add_plant', data={'name': 'Rose', 'schedule': '5',"plant_type": "flower","first_watered": first_watered_date})
 
     res = client.get('/my_plants')
     
@@ -115,7 +117,7 @@ def test_plants_when_logged_in(client):
 def test_delete_plant(client, app, init_user):
     with app.app_context():
         # Add a plant for the user to delete
-        plant = Plant(name="Rose", schedule=3, user_id=init_user.id)
+        plant = Plant(name="Rose", schedule=3, user_id=init_user.id, plant_type="flower")
         db.session.add(plant)
         db.session.commit()
 
