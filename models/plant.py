@@ -15,7 +15,7 @@ class Plant(db.Model):
     last_watered = db.mapped_column(db.String, default="Never")
     water_count = db.mapped_column(db.Integer, default=0)
     completes = db.relationship("Complete", back_populates="plant")
-    user_id = db.mapped_column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.mapped_column(db.Integer, db.ForeignKey("user.id"))
     owner = db.relationship("User", back_populates="plants")
 
     def completed(self):

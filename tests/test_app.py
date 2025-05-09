@@ -5,6 +5,7 @@ from models.user import User
 from models.plant import Plant
 from models.complete import Complete
 from datetime import datetime
+from flask import *
 
 @pytest.fixture
 def app():
@@ -29,6 +30,7 @@ def init_user(app):
         user.set_password("testpass")
         db.session.add(user)
         db.session.commit()
+        user = db.session.execute(db.select(User).where(User.username =="testuser")).scalar()
         return user
 
 # ---------- UNIT TESTS ----------
@@ -99,3 +101,31 @@ def test_water_plant(client, app, init_user):
     response = client.post(f"/watered/{plant_id}")
     assert response.status_code == 302
 
+def test_plants_when_logged_in(client):
+    client.post('/register', data={'username': 'jim', 'password': '123'})
+    client.post('/login', data={'username': 'jim', 'password': '123'},)
+
+    client.post('/add_plant', data={'name': 'Rose', 'schedule': '5'})
+
+    res = client.get('/my_plants')
+    
+    assert b'Rose' in res.data  
+    assert res.status_code == 200
+
+def test_delete_plant(client, app, init_user):
+    with app.app_context():
+        # Add a plant for the user to delete
+        plant = Plant(name="Rose", schedule=3, user_id=init_user.id)
+        db.session.add(plant)
+        db.session.commit()
+
+        plant_id = plant.id
+
+    with client.session_transaction() as sess:
+        sess["user_id"] = init_user.id
+    response = client.post(f"/delete/{plant_id}", follow_redirects=True)
+
+    assert response.status_code == 200
+
+    deleted_plant = db.session.get(Plant, plant_id)
+    assert deleted_plant is None 

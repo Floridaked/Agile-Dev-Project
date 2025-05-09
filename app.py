@@ -22,6 +22,7 @@ app.secret_key = 'secret-key????'
 
 @app.route("/") 
 def home(): 
+    session.clear()
     return render_template("home.html")
 
 @app.route("/my_plants") 
@@ -49,19 +50,9 @@ def plant_detail(id):
     return render_template("plant_detail.html", data=plant, complete=completed)
 
 
-@app.route("/api/plants", methods=["POST"])
-def add_plant():
-    if 'user_id' not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    data = request.json
-    new_plant = Plant(name=data["name"], schedule=data["schedule"], user_id=session["user_id"])
-    db.session.add(new_plant)
-    db.session.commit()
-    return jsonify(new_plant.to_dict())
 
 
-#for adding plants need to create javascript and connect to home.html where we can have add plants form
+
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
