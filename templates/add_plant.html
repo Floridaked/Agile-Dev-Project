@@ -6,28 +6,34 @@
     <title>Add Plant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="add-plant-bg">
+<body class="addplant-bg">
     <nav>
-        <h2>🌱 Sprout Spot</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
           <a href="{{ url_for('plants') }}">My Plants</a>
           <a href="{{ url_for('search_plant') }}">Search</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
 
-    <main>
-        <h1>Add a New Plant</h1>
-        <form action="{{ url_for('add_plant_page') }}" method="POST">
-            <label for="name">Plant Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
+    <div class="center-wrapper">
+        <main class="form-container">
+            <h1>Add a New Plant</h1>
+            <form action="{{ url_for('add_plant') }}" method="POST">
+                <label for="name">Plant Name:</label><br>
+                <input type="text" id="name" name="name" placeholder="Enter a plant name" required><br><br>
 
-            <label for="schedule">Watering Frequency (days):</label><br>
-            <input type="number" id="schedule" name="schedule" required><br><br>
+                <label for="plant_type">Type :</label><br>
+                <input type="text" id="plant_type" name="plant_type" placeholder="eg. Outdoor" required><br><br>
 
-        
+                <label for="schedule">Watering Frequency (days):</label><br>
+                <input type="number" id="schedule" name="schedule" required><br><br>
+            
+                <label for="first_watered">Last watered date:</label><br>
+                <input type="date" id="first_watered" name="first_watered" required><br><br>            
 
-            <input type="submit" value="Add Plant">
-        </form>
-    </main>
+                <input type="submit" value="Add Plant">
+            </form>
+        </main>
 </body>
 </html>

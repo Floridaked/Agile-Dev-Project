@@ -8,11 +8,11 @@
 
 <body class="search-bg">
     <nav>
-        <h2>🌱 Sprout Spot</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('plants') }}">My Plants</a>
-            <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
     <main class="search-container">

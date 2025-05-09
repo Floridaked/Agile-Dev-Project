@@ -19,13 +19,26 @@ app.instance_path = Path(".").resolve()
 
 db.init_app(app)
 app.secret_key = 'secret-key????'
+app.secret_key = 'secret-key????'
 
 @app.route("/") 
 def home(): 
+    session.clear()
     return render_template("home.html")
 
 @app.route("/my_plants") 
 def plants(): 
+   
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    statement = db.select(Plant).where(Plant.user_id == user_id).order_by(Plant.schedule.asc())
+    records = db.session.execute(statement).scalars().all()      # .all() to allow looping
+    statement = db.select(User).where(User.id == user_id)
+    user = db.session.execute(statement).scalar()
+
+    return render_template("plants.html", data=records, user=user)
    
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -54,11 +67,19 @@ def add_plant():
     if 'user_id' not in session:
         return jsonify({"error": "Unauthorized"}), 401
 
-    data = http_requests.json
-    new_plant = Plant(name=data["name"], schedule=data["schedule"], user_id=session["user_id"])
+    name = request.form.get("name")
+    schedule = request.form.get("schedule")
+    plant_type = request.form["plant_type"]
+    first_watered =  request.form["first_watered"]
+    first_watered = dt.strptime(first_watered, "%Y-%m-%d").strftime("%B %d, %Y") + " at 12:00AM"    
+    new_plant = Plant(name=name, schedule=int(schedule), user_id=session['user_id'], plant_type=plant_type)
+    first_watering_record = Complete(plant=new_plant, date=first_watered)
     db.session.add(new_plant)
+    db.session.add(first_watering_record)
     db.session.commit()
-    return jsonify(new_plant.to_dict())
+
+    # Redirect to the plants page after adding the plant
+    return redirect(url_for('plants'))
 
 
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
@@ -68,10 +89,14 @@ def add_plant_page():
     if request.method == "POST":  # Use Flask's request object
         name = request.form["name"]
         schedule = int(request.form["schedule"])
+        plant_type = request.form["plant_type"]
+        first_watered =  request.form["first_watered"]
+        first_watered = dt.strptime(first_watered, "%Y-%m-%d").strftime("%B %d, %Y") + " at 12:00AM"    
         user_id = session["user_id"]
-
-        new_plant = Plant(name=name, schedule=schedule, user_id=user_id)
+        new_plant = Plant(name=name, schedule=schedule, user_id=user_id, plant_type=plant_type)
+        first_watering_record = Complete(plant=new_plant, date=first_watered)
         db.session.add(new_plant)
+        db.session.add(first_watering_record)
         db.session.commit()
         return redirect("/my_plants")
     return render_template("add_plant.html")
@@ -187,16 +212,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+        # Debug: Check if username exists
         user = db.session.execute(db.select(User).where(User.username == username)).scalar()
+        if not user:
+            print(f"User '{username}' not found")
+            return "Invalid credentials", 401
 
-        if user and user.check_password(password):
-            session['user_id'] = user.id
-            session['username'] = user.username
-            return redirect(url_for('plants'))
-        return "Invalid credentials", 401
+        # Debug: Check if password matches
+        if not user.check_password(password):
+            print(f"Invalid password for user '{username}'")
+            return "Invalid credentials", 401
+
+        # Successful login
+        session['user_id'] = user.id
+        session['username'] = user.username
+        return redirect(url_for('plants'))
 
     return render_template('login.html')
-
 
 @app.route('/logout')
 def logout():
