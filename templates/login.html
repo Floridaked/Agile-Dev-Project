@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Log In</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+
+<body class="log-in">
+  <div class="vert">
   <form method="post">
     Username: <input name="username"><br>
     Password: <input type="password" name="password"><br>
