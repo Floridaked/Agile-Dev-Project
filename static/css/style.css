@@ -207,7 +207,7 @@ main {
 
   /*search results*/
   .result-container {
-    max-width: 900px;
+    max-width: 950px;
     margin: 4rem auto 0; 
     padding: 2rem;
     background-color: rgba(245, 245, 245, 0.6);
@@ -220,29 +220,47 @@ main {
     padding: 0;
     margin: 2rem 0;
   }
-  .result-item {
-    background-color: #f7fbf5;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    text-align: left;
-  }
-  .result-item img {
-    margin-top: 0.5rem;
-    max-width: 100%;
-    border-radius: 6px;
-  }
-  .result-item a {
-    display: inline-block;
-    margin-top: 0.5rem;
-    color: #356859;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .result-item a:hover {
-    text-decoration: underline;
-  }
+.result-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  background-color: #f7fbf5;
+  padding: 1.5rem 2rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  min-height: 225px
+}
+.result-link:hover {
+  background-color: #d7e8d2;
+  transform: scale(1.02);
+}
+.result-item {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden; 
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+  
+  .plant-image {
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  margin-right: 2rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.plant-info {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.details-link {
+  font-size: 1rem;
+  color: #2d6a4f;
+}
   .button-link {
     display: inline-block;
     height: 40px;
