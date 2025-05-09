@@ -19,13 +19,26 @@ app.instance_path = Path(".").resolve()
 
 db.init_app(app)
 app.secret_key = 'secret-key????'
+app.secret_key = 'secret-key????'
 
 @app.route("/") 
 def home(): 
+    session.clear()
     return render_template("home.html")
 
 @app.route("/my_plants") 
 def plants(): 
+   
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    statement = db.select(Plant).where(Plant.user_id == user_id).order_by(Plant.schedule.asc())
+    records = db.session.execute(statement).scalars().all()      # .all() to allow looping
+    statement = db.select(User).where(User.id == user_id)
+    user = db.session.execute(statement).scalar()
+
+    return render_template("plants.html", data=records, user=user)
    
     if 'user_id' not in session:
         return redirect(url_for('login'))
