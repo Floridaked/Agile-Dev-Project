@@ -8,45 +8,58 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
 
 </head>
-<body>
+<body class="plants-bg">
     <nav>
-        <h2>🌱 Plant Tracker</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('search_plant') }}">Search</a>
-            <a href="{{ url_for('logout') }}">logout</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
     </nav>
   
-    <div class="reminder">  
-        {% for plant in data %}
-            {% if plant.count_down() <= 0 %}
-            <div class=reminder-box> Water {{ plant.name }} today</div>
-            {% endif %}
-        {% endfor %}
-    </div>
+  
 
     <main>
+        
         <div class="top-bar">
             <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
-            <a href="{{ url_for('add_plant_page') }}" class="add-btn">➕ Add Plant</a>
+            <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
+        </div>
+        <div class="center-btn">
+            <div class="reminder">  
+                {% for plant in data %}
+                    {% if plant.count_down() <= 0 %}
+                    <div class=reminder-box> Water {{ plant.name }} today</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
 
         {% for plant in data %}
-        <div class="card">
-            <h2>{{ plant.name }}</h2>
-            <p>Water every {{ plant.schedule }} days</p>
+        <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
+            <div class="card">
+                <div class="card-left">
+                    <h2>{{ plant.name }}</h2>
+                </div>
+                    
 
-            {% if plant.count_down() > 0 %}
-                <p>Water in {{plant.count_down()}} days</p>
-            {% elif plant.count_down() == 0 %}
-                <p>Water today</p>
-            {% else%}
-                <p>Water {{ - plant.count_down()}} days late</p>
-            {% endif%}
-            <a href="{{ url_for('plant_detail', id=plant.id) }}">View Details</a>
-        </div>
+                <div class="card-center">
+                    {% if plant.count_down() > 0 %}
+                    <p>Water in {{plant.count_down()}} days</p>
+                {% elif plant.count_down() == 0 %}
+                    <p>Water today</p>
+                {% else%}
+                    <p>Water {{ - plant.count_down()}} days late</p>
+                {% endif%}
+                </div>
+                
+                <div class="card-right">
+                    <button class="water-btn">Water now</button>
+                </div>
+            </div>
+        </a>
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}
