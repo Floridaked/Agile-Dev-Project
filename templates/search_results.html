@@ -16,23 +16,24 @@
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
-    <main class="search-container">
+    <main class="result-container">
         <h1>Results for "{{ query }}"</h1>
 
         {% if data and data["data"] %}
         <ul class="results-list">
             {% for plant in data["data"] %}
             <li class="result-item">
-                <strong>{{ plant["common_name"] or "No common name" }}</strong><br>
-                Scientific: {{ plant["scientific_name"] }}<br>
-        
-                {% if 'default_image' in plant and plant['default_image'] %}
-                <img src="{{ plant['default_image']['thumbnail'] }}" alt="Image"><br>
-
-                {% endif %}
-        
-                <a href="/plant/{{ plant['id'] }}">View Details</a>
-            </li><br>
+                <a href="/plant/{{ plant['id'] }}" class="result-link">
+                    {% if 'default_image' in plant and plant['default_image'] %}
+                    <img src="{{ plant['default_image']['thumbnail'] }}" alt="Image" class="plant-image">
+                    {% endif %}
+                    <div class="plant-info">
+                        <strong>{{ plant["common_name"] or "No common name" }}</strong><br>
+                        Scientific Name: {{ plant["scientific_name"] }}<br>
+                        <span class="details-link">View Details</span>
+                    </div>
+                </a>
+            </li>
             {% endfor %}
         </ul>
         {% else %}
