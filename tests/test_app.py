@@ -115,7 +115,3 @@ class TestAppFunctional(unittest.TestCase):
         response = self.client.post('/delete/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn(b'Pothos', response.data)
-
-
-if __name__ == '__main__':
-    unittest.main()
