@@ -18,45 +18,26 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.instance_path = Path(".").resolve()
 
 db.init_app(app)
-app.secret_key = 'secret-key????'
-app.secret_key = 'secret-key????'
+
 
 @app.route("/") 
 def home(): 
-    session.clear()
     return render_template("home.html")
 
 @app.route("/my_plants") 
 def plants(): 
-   
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    statement = db.select(Plant).where(Plant.user_id == user_id).order_by(Plant.schedule.asc())
-    records = db.session.execute(statement).scalars().all()      # .all() to allow looping
-    statement = db.select(User).where(User.id == user_id)
-    user = db.session.execute(statement).scalar()
-
-    return render_template("plants.html", data=records, user=user)
-   
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    statement = db.select(Plant).where(Plant.user_id == user_id).order_by(Plant.schedule.asc())
-    records = db.session.execute(statement).scalars().all()      # .all() to allow looping
-    statement = db.select(User).where(User.id == user_id)
-    user = db.session.execute(statement).scalar()
-
-    return render_template("plants.html", data=records, user=user)
+    statement = db.select(Plant).order_by(Plant.schedule.asc())
+    records = db.session.execute(statement).scalars()
+    return render_template("plants.html", data=records)
 
 @app.route("/my_plants/<int:id>") 
 def plant_detail(id):   
-    stmt        = db.select(Plant).where(Plant.id == id) 
-    plant       = db.session.execute(stmt).scalar()
-    stmt        = db.select(Complete).where(Complete.plant_id == id)
-    completed   = list(db.session.execute(stmt).scalars())
+    stmt = db.select(Plant).where(Plant.id == id) 
+    plant = db.session.execute(stmt).scalar()
+    stmt = db.select(Complete).where(Complete.plant_id == id)
+    completed = db.session.execute(stmt).scalars()
+    if not completed:
+        completed = "No water logs"
     if not plant:
         return "Plant not found", 404
     return render_template("plant_detail.html", data=plant, complete=completed)
@@ -64,39 +45,20 @@ def plant_detail(id):
 
 @app.route("/api/plants", methods=["POST"])
 def add_plant():
-    if 'user_id' not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    name = request.form.get("name")
-    schedule = request.form.get("schedule")
-    plant_type = request.form["plant_type"]
-    first_watered =  request.form["first_watered"]
-    first_watered = dt.strptime(first_watered, "%Y-%m-%d").strftime("%B %d, %Y") + " at 12:00AM"    
-    new_plant = Plant(name=name, schedule=int(schedule), user_id=session['user_id'], plant_type=plant_type)
-    first_watering_record = Complete(plant=new_plant, date=first_watered)
+    data = request.json
+    new_plant = Plant(name=data["name"], schedule=data["schedule"])
     db.session.add(new_plant)
-    db.session.add(first_watering_record)
     db.session.commit()
-
-    # Redirect to the plants page after adding the plant
-    return redirect(url_for('plants'))
-
-
+    return jsonify(new_plant.to_dict())
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
 
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
-    if request.method == "POST":  # Use Flask's request object
+    if request.method == "POST":
         name = request.form["name"]
         schedule = int(request.form["schedule"])
-        plant_type = request.form["plant_type"]
-        first_watered =  request.form["first_watered"]
-        first_watered = dt.strptime(first_watered, "%Y-%m-%d").strftime("%B %d, %Y") + " at 12:00AM"    
-        user_id = session["user_id"]
-        new_plant = Plant(name=name, schedule=schedule, user_id=user_id, plant_type=plant_type)
-        first_watering_record = Complete(plant=new_plant, date=first_watered)
+        new_plant = Plant(name=name, schedule=schedule)
         db.session.add(new_plant)
-        db.session.add(first_watering_record)
         db.session.commit()
         return redirect("/my_plants")
     return render_template("add_plant.html")
@@ -107,7 +69,7 @@ def edit_plant(id):
     if not plant:
         return "Plant not found", 404
 
-    if request.method == "POST":  # Use Flask's request object
+    if request.method == "POST":
         plant.name = request.form["name"]
         plant.schedule = int(request.form["schedule"])
         db.session.commit()
@@ -127,38 +89,30 @@ def delete_plant(id):
     
     return redirect("/my_plants")
 
-@app.route("/watered/<int:id>", methods=["POST"])
-def water_plant(id):
-    stmt = db.select(Plant).where(Plant.id == id)
-    plant = db.session.execute(stmt).scalar()
+api_key = os.getenv("API_KEY")
 
-    if plant:
-        plant.completed()
-        db.session.commit()
-    return redirect("/my_plants/" + str(id))
-
-api_key = "sk-mpir681573d064bfb10191"
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
-    response = http_requests.get(url)  # Corrected typo
-    if response.status_code == 200:
-        return response.json()
-    return {"data": []}
-
-def get_plant_details(id):
-    url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={id}"
     response = http_requests.get(url)
     if response.status_code == 200:
         return response.json()
     return {"data": []}
 
-@app.route("/plant/<int:id>")
-def plant_info(id):
-    detail_data = get_plant_details(id)
+def get_plant_details(plant_id):
+    url = f"https://perenual.com/api/species-care-guide-list?key={api_key}&species_id={plant_id}"
+    response = http_requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return {"data": []}
+
+@app.route("/plant/<int:plant_id>")
+def plant_info(plant_id):
+    detail_data = get_plant_details(plant_id)
     if "data" not in detail_data or not detail_data["data"]:
         return "No plant details found", 404
 
     plant = detail_data["data"][0]
+    # Default values
     watering = "No info available."
     sunlight = "No info available."
     pruning = "No info available."
@@ -171,7 +125,13 @@ def plant_info(id):
         elif section["type"] == "pruning":
             pruning = section["description"]
 
-    return render_template("plant_info.html", data=plant, watering=watering, sunlight=sunlight, pruning=pruning)
+    return render_template(
+        "plant_info.html",
+        data=plant,
+        watering=watering,
+        sunlight=sunlight,
+        pruning=pruning
+    )
 
 @app.route("/search_plant")
 def search_plant():
@@ -179,61 +139,20 @@ def search_plant():
 
 @app.route("/results", methods=["POST"])
 def results():
-    query = request.form["query"]  # Use Flask's request object
+    query = request.form["query"]
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
 
+@app.route("/watered/<int:id>", methods=["POST"])
+def water_plant(id):
+    stmt = db.select(Plant).where(Plant.id == id)
+    plant = db.session.execute(stmt).scalar()
 
-
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        existing_user = db.session.execute(db.select(User).where(User.username == username)).scalar()
-
-        if existing_user:
-            return "User already exists", 400
-        new_user = User(username=username)
-        new_user.set_password(password)
-
-        db.session.add(new_user)
+    if plant:
+        plant.watered = True
+        plant.completed()
         db.session.commit()
-        return redirect(url_for('login'))
-
-    return render_template('register.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        # Debug: Check if username exists
-        user = db.session.execute(db.select(User).where(User.username == username)).scalar()
-        if not user:
-            print(f"User '{username}' not found")
-            return "Invalid credentials", 401
-
-        # Debug: Check if password matches
-        if not user.check_password(password):
-            print(f"Invalid password for user '{username}'")
-            return "Invalid credentials", 401
-
-        # Successful login
-        session['user_id'] = user.id
-        session['username'] = user.username
-        return redirect(url_for('plants'))
-
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('home'))
+    return redirect("/my_plants")
 
 
 
