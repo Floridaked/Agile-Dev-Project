@@ -10,49 +10,66 @@
 </head>
 <body class="plants-bg">
     <nav>
-        <h2>🌱 Sprout Spot</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
+<<<<<<< HEAD
             <a href="{{ url_for('home') }}">Home</a>
+=======
+>>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
             <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
     </nav>
   
+<<<<<<< HEAD
   
 
+=======
+>>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
     <main>
-        
         <div class="top-bar">
+<<<<<<< HEAD
             <h1>{{user.username}}'s Plants</h1>
+=======
+            <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
+>>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
         <div class="center-btn">
             <div class="reminder">  
                 {% for plant in data %}
-                    {% if plant.count_down() <= 0 %}
+                    {% if plant.countdown <= 0 %}
                     <div class=reminder-box> Water {{ plant.name }} today</div>
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
 
-        {% for plant in data %}
+        {% for plant in data %} 
         <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
-            <div class="card">
+            <div class="card                 
+                {% if plant.countdown <= 0 %} card-alert
+                {% endif %}">
                 <div class="card-left">
+                    {% if plant.countdown > 0 %}
+                        <img class=mood src="static\Images\happy.png">
+                    {% elif plant.countdown == 0 %}
+                        <img class=mood src="static\Images\water.png">
+                    {% else%}
+                        <img class=mood src="static\Images\sad.png">
+                    {% endif%}
                     <h2>{{ plant.name }}</h2>
                 </div>
-                    
-
+              
                 <div class="card-center">
-                    {% if plant.count_down() > 0 %}
-                    <p>Water in {{plant.count_down()}} days</p>
-                {% elif plant.count_down() == 0 %}
-                    <p>Water today</p>
-                {% else%}
-                    <p>Water {{ - plant.count_down()}} days late</p>
-                {% endif%}
+                    {% if plant.countdown > 0 %}
+                        <p>Water in {{plant.countdown}} days</p>
+                    {% elif plant.countdown == 0 %}
+                        <p>Water today</p>
+                    {% else%}
+                        <p>Water {{ - plant.countdown}} days late</p>
+                    {% endif%}
                 </div>
                 
                 <div class="card-right">
@@ -60,6 +77,10 @@
                 </div>
             </div>
         </a>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}
