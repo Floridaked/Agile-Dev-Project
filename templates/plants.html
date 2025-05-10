@@ -18,9 +18,7 @@
 
     </nav>
   
-
     <main>
-        
         <div class="top-bar">
             <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
@@ -35,12 +33,12 @@
             </div>
         </div>
 
-        {% for plant in data %}
-        
+        {% for plant in data %} 
         <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
-            <div class="card">
+            <div class="card                 
+                {% if plant.countdown <= 0 %} card-alert
+                {% endif %}">
                 <div class="card-left">
-
                     {% if plant.countdown > 0 %}
                         <img class=mood src="static\Images\happy.png">
                     {% elif plant.countdown == 0 %}
@@ -48,19 +46,17 @@
                     {% else%}
                         <img class=mood src="static\Images\sad.png">
                     {% endif%}
-
                     <h2>{{ plant.name }}</h2>
                 </div>
-                    
-
+              
                 <div class="card-center">
-                {% if plant.countdown > 0 %}
-                    <p>Water in {{plant.countdown}} days</p>
-                {% elif plant.countdown == 0 %}
-                    <p>Water today</p>
-                {% else%}
-                    <p>Water {{ - plant.countdown}} days late</p>
-                {% endif%}
+                    {% if plant.countdown > 0 %}
+                        <p>Water in {{plant.countdown}} days</p>
+                    {% elif plant.countdown == 0 %}
+                        <p>Water today</p>
+                    {% else%}
+                        <p>Water {{ - plant.countdown}} days late</p>
+                    {% endif%}
                 </div>
                 
                 <div class="card-right">

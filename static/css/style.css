@@ -609,3 +609,11 @@ main {
     height: 100px;
     width: 100px;
   }
+
+  .card-link .card-alert {
+    background-color: #f6f3ea;
+  }
+
+  .card-link .card-alert:hover {
+    background-color: #f3f1e6f4;
+  }
