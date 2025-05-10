@@ -604,3 +604,8 @@ main {
   .home-bg {
     background-image: url(../Images/home-bg.png);
   }
+
+  .mood{
+    height: 100px;
+    width: 100px;
+  }

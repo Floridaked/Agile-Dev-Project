@@ -38,6 +38,12 @@ def plants():
     statement = db.select(User).where(User.id == user_id)
     user = db.session.execute(statement).scalar()
 
+    for plant in records:
+        plant.countdown = plant.count_down()
+        
+    
+    records = sorted(records, key=lambda p: p.countdown)
+
     return render_template("plants.html", data=records, user=user)
 
 @app.route("/my_plants/<int:id>") 
