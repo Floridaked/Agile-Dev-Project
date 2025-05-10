@@ -6,40 +6,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body>
+<body class="plantinfo-bg">
     <nav>
-        <h2>🌱 Plant Tracker</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-            <a href="{{ url_for('home') }}">Home</a>
             <a href="{{ url_for('plants') }}">My Plants</a>
-            <a href="{{ url_for('search_plant') }}">Search</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
-    <h1>{{ data["common_name"] or "Plant Info" }}</h1>
+    <main class="info-container">
+        <h1>{{ data["common_name"] or "Plant Info" }}</h1>
 
-    {% if "default_image" in data and data["default_image"] %}
-    <img src="{{ data[" default_image"]["original"] }}" alt="Plant Image" style="max-width:300px;"><br>
-    {% endif %}
+        {% if "default_image" in data and data["default_image"] %}
+        <img src="{{ data[" default_image"]["original"] }}" alt="Plant Image" style="max-width:300px;"><br>
+        {% endif %}
 
-    <h3><em>{{ data["scientific_name"] }}</em></h3>
+        <h3><em>{{ data["scientific_name"] }}</em></h3>
 
-    <div style="border:1px solid #ccc; padding:1em; margin-bottom:1em;">
-        <h2>💧 Watering</h2>
-        <p>{{ watering }}</p>
-    </div>
+        <div class="info-spacing">
+            <h2>💧 Watering 💧</h2>
+            <p>{{ watering }}</p>
+        </div>
 
-    <div style="border:1px solid #ccc; padding:1em; margin-bottom:1em;">
-        <h2>🌞 Sunlight</h2>
-        <p>{{ sunlight }}</p>
-    </div>
+        <div class="info-spacing">
+            <h2>🌞 Sunlight 🌞</h2>
+            <p>{{ sunlight }}</p>
+        </div>
 
-    <div style="border:1px solid #ccc; padding:1em; margin-bottom:1em;">
-        <h2>✂️ Pruning</h2>
-        <p>{{ pruning }}</p>
-    </div>
+        <div class="info-spacing">
+            <h2>✂️ Pruning ✂️</h2>
+            <p>{{ pruning }}</p>
+        </div>
 
-    <a href="/search_plant">← Back to Search</a>
+        <a href="/search_plant">← Back to Search</a>
+    </main>
 </body>
 
 </html>

@@ -6,20 +6,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body>
+<body class="search-bg">
     <nav>
-        <h2>🌱 Plant Tracker</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-            <a href="{{ url_for('home') }}">Home</a>
             <a href="{{ url_for('plants') }}">My Plants</a>
-            <a href="{{ url_for('search_plant') }}">Search</a>
+            <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
-    <h1>Search for a Plant</h1>
-    <form method="POST" action="/results">
-        <input type="text" name="query" placeholder="Enter plant name..." required>
-        <button type="submit">Search</button>
+    <main class="search-container">
+        <h1>Search for a Plant</h1>
+        <p class="search-description">
+            Use the search bar below to find detailed information about your plants! Our database includes species names, watering frequencies, care instructions, growth stages, images, and more. 
+        </p>
+        <p class="search-description">Find the information you need to keep your plants happy and healthy today!
+        </p>
+        <form method="POST" action="/results" class="search-form">
+            <input type="text" name="query" placeholder="Enter plant name..." required>
+            <button type="submit">Search</button>
     </form>
+    </main>
 </body>
 
 </html>

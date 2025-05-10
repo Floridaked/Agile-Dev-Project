@@ -5,37 +5,60 @@
     <title>Plant Details</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="details-bg">
     <nav>
-        <h2>🌱 Plant Tracker</h2>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-          <a href="{{ url_for('home') }}">Home</a>
           <a href="{{ url_for('plants') }}">My Plants</a>
-          <a href="{{ url_for('search_plant') }}">Search</a>
-          <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+          <a href="{{ url_for('search_plant') }}">Plant Info</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
 
-    <main>
-        <h1>{{ data.name }}</h1>
-        <p><strong>Water every:</strong> {{ data.schedule }} days</p>
-        <form action="{{ url_for('water_plant', id=data.id)}}" method="POST">
-            <input type="submit" value="Mark as Watered">
-        </form>
-        
-        <!-- Edit Button -->
-        <form action="{{ url_for('edit_plant', id=data.id) }}" method="GET" style="display: inline;">
-            <button type="submit" class="edit-btn">✏️ Edit Plant</button>
-        </form>
-        <form action="{{ url_for('delete_plant', id=data.id)}}" method="POST">
-            <input type="submit" value="Delete Plant">
-        </form>
-        
-        {% for completed in complete %}
-        
-            <h4>{{ completed.date }}</h4>
+    <main class="plant-detail-container">
     
-        {% endfor %}
+        
+        <div class="plant-card">
+            <div class="plant-header">
+                <div class="plant-info">
+                    <h2>{{ data.name }}</h2>
+                    <p>{{ data.type }}</p>
+                    <p><strong>Watering frequency:</strong> Every {{ data.schedule }} days</p>
+                    <div class="action-buttons">
+                        <form action="{{ url_for('edit_plant', id=data.id) }}" method="GET">
+                            <button type="submit" class="pill-btn edit">Edit</button>
+                        </form>
+                        <form action="{{ url_for('delete_plant', id=data.id)}}" method="POST">
+                            <button type="submit" class="pill-btn delete">Delete</button>
+                        </form>
+                        <form action="{{ url_for('water_plant', id=data.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="pill-btn water-now">Water now</button>
+                        </form> 
+                    </div>
+                </div>
+
+
+
+                <div class="log-box">
+                    <h3>Watering log</h3>
+                    <ul>
+                        {% if complete|length > 0 %}
+                    <p>You have watered this plant {{ data.water_count }} times.</p>
+                    <h3>Watering Dates:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        {% for completed in complete %}
+                            <li>{{ completed.date }}</li>
+                        {% endfor %}
+                    </ul>
+                        {% else %}
+                            <p>You have not watered this plant yet.</p>
+                            <p>No watering history available.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+        </div>
+        
+        
     </main>
 </body>
 </html>
