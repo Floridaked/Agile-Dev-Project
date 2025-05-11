@@ -12,28 +12,15 @@
     <nav>
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-<<<<<<< HEAD
-            <a href="{{ url_for('home') }}">Home</a>
-=======
->>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
             <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
     </nav>
-  
-<<<<<<< HEAD
-  
 
-=======
->>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
     <main>
         <div class="top-bar">
-<<<<<<< HEAD
             <h1>{{user.username}}'s Plants</h1>
-=======
-            <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
->>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
         <div class="center-btn">
@@ -77,10 +64,6 @@
                 </div>
             </div>
         </a>
-<<<<<<< HEAD
-=======
-
->>>>>>> 2ceb9da11a10d38dd5226f82b66e1940defc0b56
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}

@@ -19,7 +19,6 @@ app.instance_path = Path(".").resolve()
 
 db.init_app(app)
 app.secret_key = 'secret-key????'
-app.secret_key = 'secret-key????'
 
 @app.route("/") 
 def home(): 
@@ -135,7 +134,7 @@ def water_plant(id):
 api_key = "sk-mpir681573d064bfb10191"
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
-    response = http_requests.get(url)  # Corrected typo
+    response = http_requests.get(url) 
     if response.status_code == 200:
         return response.json()
     return {"data": []}
@@ -170,16 +169,22 @@ def plant_info(id):
 
 @app.route("/search_plant")
 def search_plant():
-    return render_template("search_plant.html")
+    query = ""
+    data = get_plant_info(query)
+
+    def get_common_name(plant):
+        return plant.get("common_name", "").lower()
+
+    if "data" in data and isinstance(data["data"], list):
+        data["data"] = sorted(data["data"], key=get_common_name)
+
+    return render_template("search_plant.html", data=data)
 
 @app.route("/results", methods=["POST"])
 def results():
     query = request.form["query"]  # Use Flask's request object
     data = get_plant_info(query)
     return render_template("search_results.html", data=data, query=query)
-
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -229,8 +234,6 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('home'))
-
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
