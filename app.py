@@ -54,6 +54,8 @@ def plant_detail(id):
     completed   = list(db.session.execute(stmt).scalars())
     if not plant:
         return "Plant not found", 404
+    plant.countdown = plant.count_down()
+    
     return render_template("plant_detail.html", data=plant, complete=completed)
 
 

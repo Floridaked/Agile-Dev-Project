@@ -29,14 +29,23 @@ class Plant(db.Model):
 
     def count_down(self):
         if not self.completes:    
+            
             # if the user never water the plant, they should water today
             return 0
+       
         
         last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
         days_since_last_watered = (datetime.now().date() - datetime.strptime(last_watered.date, "%B %d, %Y at %I:%M%p").date()).days
         count_down = self.schedule - days_since_last_watered
         return count_down
-
+    
+    def streak(self):
+        countdown = self.count_down()
+        if countdown < 0:    
+            self.water_count = 0
+            db.session.commit()
+        return self.water_count
+        
 
     
 
