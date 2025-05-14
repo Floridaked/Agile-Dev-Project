@@ -11,9 +11,23 @@
         <div class="nav-links">
           <a href="{{ url_for('plants') }}">My Plants</a>
           <a href="{{ url_for('search_plant') }}">Plant Info</a>
+          <a href="{{ url_for('achievements') }}">Achievements</a>
           <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
+
+            <!-- Display flash messages for water streak -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            {% if category == "water_streak" %}
+                                <li class="{{ category }}">{{ message }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
 
     <main class="plant-detail-container">
     
