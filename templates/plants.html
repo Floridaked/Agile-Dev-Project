@@ -20,7 +20,6 @@
     </nav>
   
     <main>
-        <!-- Display flash messages -->
         <!-- Display flash messages for water streak -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -41,7 +40,6 @@
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
 
-<<<<<<< HEAD
         
 
 
@@ -50,10 +48,6 @@
             <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings">💡</button>
 
             <div class="reminder">  
-=======
-        <div class="center-btn">
-            <div class="reminder">
->>>>>>> streak-award-system
                 {% for plant in data %}
                     {% if plant.countdown is not none and plant.countdown <= 0 %}
                         <div class="reminder-box">Water {{ plant.name }} today</div>
