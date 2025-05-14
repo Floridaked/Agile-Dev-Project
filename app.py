@@ -43,6 +43,14 @@ def plants():
     if not plants:
         print(f"No plants found for user {user_id}")  # Debug: No plants found
 
+    for plant in plants:
+        try:
+            plant.countdown = plant.count_down()  # Call the count_down method
+        except Exception as e:
+            print(f"Error calculating countdown for plant {plant.name}: {e}")
+            plant.countdown = None  # Assign None if an error occurs
+
+
     # Check the total number of plants added by the user
     total_plants = len(plants)
     print(f"Total plants for user {user_id}: {total_plants}")  # Debug
@@ -64,8 +72,7 @@ def plants():
             new_achievement = Achievement(user_id=user_id, medal=plant_medal)
             db.session.add(new_achievement)
             db.session.commit()
-            print(f"Achievement saved: {plant_medal} medal for user {user_id}")  # Debug
-            flash(f"Congratulations! You've earned a {plant_medal} medal for adding {total_plants} plants!", "success")
+            flash(f"Congratulations! You've earned a {plant_medal} medal for adding {total_plants} plants!", "plant_streak")
 
     return render_template("plants.html", data=plants, user=user)
 
@@ -117,6 +124,7 @@ def add_plant_page():
         db.session.add(first_watering_record)
         db.session.commit()
 
+
         return redirect("/plants")
     return render_template("add_plant.html")
 
@@ -156,34 +164,6 @@ def achievements():
 
     return render_template("achievement.html", achievements=achievements)
 
-@app.route("/streak_award/<streak_type>")
-def streak_award(streak_type):
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    user = db.session.get(User, user_id)
-
-    # Map streak types to user attributes
-    streak_map = {
-        "water": user.water_streak,
-        "plant": user.plant_streak
-    }
-    streak = streak_map.get(streak_type)
-
-    if streak is None:
-        return "Invalid streak type", 400
-
-    # Determine the medal based on the streak
-    medal = (
-        "Gold" if streak >= 10 else
-        "Silver" if streak >= 5 else
-        "Bronze" if streak >= 3 else
-        None
-    )
-
-    return render_template("streak_award.html", streak=streak, medal=medal, streak_type=streak_type)
-
 @app.route("/watered/<int:id>", methods=["POST"])
 def water_plant(id):
     # Check if the user is logged in
@@ -222,8 +202,7 @@ def water_plant(id):
             db.session.add(new_achievement)
             db.session.commit()
 
-            flash(f"Congratulations! You've earned a {medal} medal!", "success")
-            return redirect(url_for('streak_award', streak_type="water"))
+            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak}", "water_streak")
 
     return redirect("/my_plants/" + str(id))
 

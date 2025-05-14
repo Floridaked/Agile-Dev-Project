@@ -21,15 +21,18 @@
   
     <main>
         <!-- Display flash messages -->
+        <!-- Display flash messages for water streak -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul>
                     {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
+                        {% if category == "plant_streak" %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             {% endif %}
-        {% endwith %}   
+        {% endwith %} 
 
         <!-- Display the user's plants -->
 
@@ -54,24 +57,28 @@
                 {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
                 {% endif %}">
                 <div class="card-left">
-                    {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
-                        <img class=mood src="static\Images\happy.png">
+                    {% if plant.countdown is not none and plant.countdown > 0 %}
+                        <img class="mood" src="static/Images/happy.png">
                     {% elif plant.countdown == 0 %}
-                        <img class=mood src="static\Images\water.png">
-                    {% else%}
-                        <img class=mood src="static\Images\sad.png">
-                    {% endif%}
+                        <img class="mood" src="static/Images/water.png">
+                    {% elif plant.countdown is not none %}
+                        <img class="mood" src="static/Images/sad.png">
+                    {% else %}
+                        <img class="mood" src="static/Images/unknown.png">
+                    {% endif %}
                     <h2>{{ plant.name }}</h2>
                 </div>
-              
+
                 <div class="card-center">
-                    {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
-                        <p>Water in {{plant.countdown}} days</p>
+                    {% if plant.countdown is not none and plant.countdown > 0 %}
+                        <p>Water in {{ plant.countdown }} days</p>
                     {% elif plant.countdown == 0 %}
                         <p>Water today</p>
-                    {% else%}
-                        <p>Water {{ - plant.countdown}} days late</p>
-                    {% endif%}
+                    {% elif plant.countdown is not none %}
+                        <p>Water {{ -plant.countdown }} days late</p>
+                    {% else %}
+                        <p>Countdown not available</p>
+                    {% endif %}
                 </div>
                 
                 <div class="card-right">
