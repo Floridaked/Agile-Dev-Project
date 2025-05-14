@@ -49,7 +49,8 @@ def plants():
         except Exception as e:
             print(f"Error calculating countdown for plant {plant.name}: {e}")
             plant.countdown = None  # Assign None if an error occurs
-
+    
+    plants = sorted(plants, key=lambda p: p.countdown)
 
     # Check the total number of plants added by the user
     total_plants = len(plants)
