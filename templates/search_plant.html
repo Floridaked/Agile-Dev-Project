@@ -17,16 +17,48 @@
     </nav>
     <main class="search-container">
         <h1>Search for a Plant</h1>
-        <p class="search-description">
-            Use the search bar below to find detailed information about your plants! Our database includes species names, watering frequencies, care instructions, growth stages, images, and more. 
-        </p>
+        
         <p class="search-description">Find the information you need to keep your plants happy and healthy today!
         </p>
         <form method="POST" action="/results" class="search-form">
             <input type="text" name="query" placeholder="Enter plant name..." required>
             <button type="submit">Search</button>
     </form>
+    
     </main>
+
+    <div class="info-icon-row">
+        <button id="info-icon" class="info-icon-btn" title="More info">💡</button>
+    </div>
+
+    <div id="info-modal" class="info-modal hidden">
+        <div class="info-modal-content">
+            <span id="close-modal" class="close-btn">&times</span>
+            <p>
+                Use the search bar to find detailed information about your plants! Our database includes species names, watering frequencies, care instructions, growth stages, images, and more.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const iconBtn = document.getElementById("info-icon");
+        const modal = document.getElementById("info-modal");
+        const closeBtn = document.getElementById("close-modal");
+
+        iconBtn.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.add("hidden");
+            }
+        });
+    </script>
 </body>
 
 </html>
