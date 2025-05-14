@@ -13,21 +13,36 @@
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
     </nav>
   
     <main>
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}   
+
+        <!-- Display the user's plants -->
+
         <div class="top-bar">
             <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
+
         <div class="center-btn">
-            <div class="reminder">  
+            <div class="reminder">
                 {% for plant in data %}
-                    {% if plant.countdown <= 0 %}
-                    <div class=reminder-box> Water {{ plant.name }} today</div>
+                    {% if plant.countdown is not none and plant.countdown <= 0 %}
+                        <div class="reminder-box">Water {{ plant.name }} today</div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -36,10 +51,10 @@
         {% for plant in data %} 
         <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
             <div class="card                 
-                {% if plant.countdown <= 0 %} card-alert
+                {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
                 {% endif %}">
                 <div class="card-left">
-                    {% if plant.countdown > 0 %}
+                    {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
                         <img class=mood src="static\Images\happy.png">
                     {% elif plant.countdown == 0 %}
                         <img class=mood src="static\Images\water.png">
@@ -50,7 +65,7 @@
                 </div>
               
                 <div class="card-center">
-                    {% if plant.countdown > 0 %}
+                    {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
                         <p>Water in {{plant.countdown}} days</p>
                     {% elif plant.countdown == 0 %}
                         <p>Water today</p>
