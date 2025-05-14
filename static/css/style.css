@@ -668,6 +668,7 @@ main {
   .mood{
     height: 100px;
     width: 100px;
+    margin-right: 1.5rem;
   }
 
   .card-link .card-alert {
