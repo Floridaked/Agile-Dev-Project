@@ -206,7 +206,7 @@ def water_plant(id):
 
     return redirect("/my_plants/" + str(id))
 
-api_key = "sk-mpir681573d064bfb10191"
+api_key = os.getenv("API_KEY")
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
     response = http_requests.get(url) 
