@@ -24,7 +24,7 @@
         <form method="POST" action="/results"   class="search-form">
             <input type="text" name="query" placeholder="Enter plant name..." required>
             <button type="submit">Search</button>
-        </form>
+            </form>
 
     </main>
 
@@ -60,6 +60,41 @@
             }
         });
     </script>
+
+    <main class="container mt-5">
+        <h1>All Plants</h1>
+        <p class="search-description">
+            Explore our list of plants! Click on any plant to learn more about its care requirements.
+        </p>
+    
+        <!-- Plant Gallery -->
+        <div class="row row-cols-4 g-4 mt-4">
+            {% if data.data %}
+            {% for plant in data.data %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if plant.default_image %}
+                    <img src="{{ plant.default_image.thumbnail }}" class="card-img-top" alt="{{ plant.common_name }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_plant.jpg') }}" class="card-img-top"
+                        alt="Default Plant Image">
+                    {% endif %}
+                    <div class="plant-info">
+                        <strong>{{plant.common_name}}</strong> <br>
+                        {{ plant.scientific_name }}<br>
+                        <a href="/plant/{{ plant.id }}" class="details-link">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <p>No plants found.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
 </body>
 
 </html>
