@@ -70,6 +70,18 @@ def test_home_route(client):
     assert response.status_code == 200
     assert b"<title>" in response.data  # assuming templates have <title>
 
+def test_login_form_exists(client):
+    response = client.get('/login')
+    assert response.status_code == 200
+    assert b'Username' in response.data
+    assert b'Password' in response.data
+
+def test_register_form_exists(client):
+    response = client.get('/register')
+    assert response.status_code == 200
+    assert b'Username' in response.data
+    assert b'Password' in response.data
+
 def test_register_and_login(client, app):
     response = client.post("/register", data={"username": "user1", "password": "pass1"})
     assert response.status_code == 302  # redirect to login
@@ -131,3 +143,15 @@ def test_delete_plant(client, app, init_user):
 
     deleted_plant = db.session.get(Plant, plant_id)
     assert deleted_plant is None 
+
+def decode_response(response):
+    return response.data.decode("utf-8")
+
+def test_plant_info_route(client):
+    response = client.get("/plant/1")
+    assert response.status_code == 200
+    text = decode_response(response)
+    assert "Plant Info" in text
+    assert "Watering" in text
+    assert "Sunlight" in text
+    assert "Pruning" in text

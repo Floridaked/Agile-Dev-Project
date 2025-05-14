@@ -18,7 +18,7 @@
         </div>
 
     </nav>
-  
+
     <main>
         <!-- Display flash messages for water streak -->
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -36,7 +36,7 @@
         <!-- Display the user's plants -->
 
         <div class="top-bar">
-            <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
+            <h1>{{user.username}}'s Plants</h1>
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
 
@@ -91,7 +91,6 @@
                 </div>
             </div>
         </a>
-
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}
