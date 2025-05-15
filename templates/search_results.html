@@ -20,6 +20,7 @@
         <h1>Results for "{{ query }}"</h1>
 
         {% if data and data["data"] %}
+        <a href="{{ url_for('search_plant') }}" class="button-linksearch_plant">← Search Again</a>
         <ul class="results-list">
             {% for plant in data["data"] %}
             <li class="result-item">
@@ -40,7 +41,7 @@
         <p>No plants found.</p>
         {% endif %}
 
-        <a href="{{ url_for('search_plant') }}" class="button-linksearch_plant">← Search Again</a>
+        
     </main>
 </body>
 
