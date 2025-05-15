@@ -796,3 +796,23 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
   }
+
+  .login-form {
+   
+  }
+
+  .button-linksearch_plant {
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: #c7d7c1;
+  color: black;
+  transition: background 0.3s ease;
+  }
+
+  .button-linksearch_plant:hover {
+    background-color: #89b489;
+  }
+  
