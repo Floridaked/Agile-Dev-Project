@@ -4,7 +4,10 @@
 <head>
     <title>Plant Search</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/search_plant.js') }}" defer></script>
+
 </head>
+
 
 <body class="search-bg">
     <nav>
@@ -19,10 +22,6 @@
     <main class="search-container">
         <h1>Search for a Plant</h1>
         
-        <p class="search-description">
-            Use the search bar below to find detailed information about your plants! Our database includes species
-            names, watering frequencies, care instructions, growth stages, images, and more.
-        </p>
         <p class="search-description">Find the information you need to keep your plants happy and healthy today!
         </p>
         <form method="POST" action="/results"   class="search-form">
@@ -45,25 +44,7 @@
         </div>
     </div>
 
-    <script>
-        const iconBtn = document.getElementById("info-icon");
-        const modal = document.getElementById("info-modal");
-        const closeBtn = document.getElementById("close-modal");
 
-        iconBtn.addEventListener("click", () => {
-            modal.classList.remove("hidden");
-        });
-
-        closeBtn.addEventListener("click", () => {
-            modal.classList.add("hidden");
-        });
-
-        window.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.classList.add("hidden");
-            }
-        });
-    </script>
 
     <main class="container mt-5">
         <h1>All Plants</h1>
