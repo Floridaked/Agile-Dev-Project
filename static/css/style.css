@@ -158,7 +158,7 @@ main {
   }
   .search-container {
     max-width: 700px;
-    margin: 4rem auto 0; 
+    margin: 4rem auto 1rem; 
     padding: 2rem;
     background-color: whitesmoke;
     border-radius: 12px;
@@ -796,3 +796,98 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
   }
+
+  .login-form {
+   
+  }
+
+  .button-linksearch_plant {
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: #c7d7c1;
+  color: black;
+  transition: background 0.3s ease;
+  }
+
+  .button-linksearch_plant:hover {
+    background-color: #89b489;
+  }
+  
+  /*gallery */
+
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 1.5rem;
+
+}
+
+
+.gallery-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.gallery-card {
+  background-color: #f4f8f3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s ease;
+  background-color: #e6f0e4;
+}
+
+.gallery-card:hover {
+  transform: scale(1.03);
+  background-color: #e6f0e4;
+}
+
+.gallery-image-wrapper {
+  height: 220px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gallery-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.gallery-card-name {
+  padding: 1rem;
+  background-color: #e6f0e4;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.plant-gallery-container {
+  width: 100%;
+  max-width: 1600px; 
+  padding: 2rem 4rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.gallery-description {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1rem;
+    max-width: 100%;
+  }
+  .plant-gallery-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.plant-gallery-header h1 {
+  margin-bottom: 0.5rem;
+}
+

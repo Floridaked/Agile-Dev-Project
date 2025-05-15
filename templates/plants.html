@@ -6,6 +6,7 @@
     <title>My Plants</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
+    <script src="{{ url_for('static', filename='js/plants_page.js') }}" defer></script>
 
 </head>
 <body class="plants-bg">
@@ -45,7 +46,7 @@
 
 
         <div class="notification-section">
-            <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings">💡</button>
+            <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings"><img src="static\Images\questionmark_g.png" alt="" style="height: 40pxl;width: 40px;"></button>
 
             <div class="reminder">  
                 {% for plant in data %}
@@ -122,25 +123,7 @@
         </div>
     </main>
 
-    <script>
-        const moodIcon = document.getElementById("mood-info-icon");
-        const moodModal = document.getElementById("mood-info-modal");
-        const closeMood = document.getElementById("close-mood-modal");
 
-        moodIcon.addEventListener("click", () => {
-            moodModal.classList.remove("hidden");
-        });
-
-        closeMood.addEventListener("click", () => {
-            moodModal.classList.add("hidden");
-        });
-
-        window.addEventListener("click", (e) => {
-            if (e.target === moodModal) {
-                moodModal.classList.add("hidden");
-            }
-        });
-    </script>
 
 </body>
 </html>
