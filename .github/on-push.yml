@@ -45,4 +45,4 @@ jobs:
         run: gh pr create -B main -H ${{ github.ref_name }} --title "Merge ${{ github.ref_name }} into main" --body "Automatic PR from GitHub Actions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: github.com/Floridaked/Agile-Dev-Project
+          GH_REPO: Floridaked/Agile-Dev-Project
