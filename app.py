@@ -162,6 +162,9 @@ def achievements():
     user_id = session['user_id']
     achievements = db.session.execute(db.select(Achievement).where(Achievement.user_id == user_id)).scalars().all()
 
+    # Sort achievements by the first letter of the second word in the medal name
+    achievements = sorted(achievements, key=lambda a: a.medal.split()[1][0])
+
     return render_template("achievement.html", achievements=achievements)
 
 @app.route("/watered/<int:id>", methods=["POST"])
