@@ -48,7 +48,8 @@ def plants():
         except Exception as e:
             print(f"Error calculating countdown for plant {plant.name}: {e}")
             plant.countdown = None  # Assign None if an error occurs
-
+    
+    plants = sorted(plants, key=lambda p: p.countdown)
 
     # Check the total number of plants added by the user
     total_plants = len(plants)
@@ -205,7 +206,8 @@ def water_plant(id):
 
     return redirect("/my_plants/" + str(id))
 
-api_key = "sk-mpir681573d064bfb10191"
+api_key = os.getenv("API_KEY")
+
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
     response = http_requests.get(url) 

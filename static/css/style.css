@@ -776,3 +776,23 @@ main {
 .hidden {
   display: none;
 }
+
+  .login-container {
+    max-width: 700px;
+    margin: 4rem auto 0; 
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .register-container {
+    max-width: 700px;
+    margin: 4rem auto 0; 
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
