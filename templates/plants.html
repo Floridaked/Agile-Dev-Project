@@ -6,6 +6,7 @@
     <title>My Plants</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
+    <script src="{{ url_for('static', filename='js/plants_page.js') }}" defer></script>
 
 </head>
 <body class="plants-bg">
@@ -13,45 +14,77 @@
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
     </nav>
-  
-  
 
     <main>
-        
+        <!-- Display flash messages for water streak -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                        {% if category == "plant_streak" %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %} 
+
+        <!-- Display the user's plants -->
+
         <div class="top-bar">
-            <h1>My Plants</h1>      <!-- Should change to user.username plants or smth? -->
+            <h1>{{user.username}}'s Plants</h1>
             <a href="{{ url_for('add_plant_page') }}" class="add-btn">✚ Add Plant</a>
         </div>
-        <div class="center-btn">
+
+        
+
+
+
+        <div class="notification-section">
+            <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings"><img src="static\Images\questionmark_g.png" alt="" style="height: 40pxl;width: 40px;"></button>
+
             <div class="reminder">  
                 {% for plant in data %}
-                    {% if plant.count_down() <= 0 %}
-                    <div class=reminder-box> Water {{ plant.name }} today</div>
+                    {% if plant.countdown is not none and plant.countdown <= 0 %}
+                        <div class="reminder-box">Water {{ plant.name }} today</div>
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
 
-        {% for plant in data %}
+        {% for plant in data %} 
         <a href="{{ url_for('plant_detail', id=plant.id) }}" class="card-link">
-            <div class="card">
+            <div class="card                 
+                {% if plant.countdown is not none and plant.countdown <= 0 %} card-alert
+                {% endif %}">
                 <div class="card-left">
+                    {% if plant.countdown is not none and plant.countdown > 0 %}
+                        <img class="mood" src="static/Images/happy.png">
+                    {% elif plant.countdown == 0 %}
+                        <img class="mood" src="static/Images/water.png">
+                    {% elif plant.countdown is not none %}
+                        <img class="mood" src="static/Images/sad.png">
+                    {% else %}
+                        <img class="mood" src="static/Images/unknown.png">
+                    {% endif %}
                     <h2>{{ plant.name }}</h2>
                 </div>
-                    
 
                 <div class="card-center">
-                    {% if plant.count_down() > 0 %}
-                    <p>Water in {{plant.count_down()}} days</p>
-                {% elif plant.count_down() == 0 %}
-                    <p>Water today</p>
-                {% else%}
-                    <p>Water {{ - plant.count_down()}} days late</p>
-                {% endif%}
+                    {% if plant.countdown is not none and plant.countdown > 0 %}
+                        <p>Water in {{ plant.countdown }} days</p>
+                    {% elif plant.countdown == 0 %}
+                        <p>Water today</p>
+                    {% elif plant.countdown is not none %}
+                        <p>Water {{ -plant.countdown }} days late</p>
+                    {% else %}
+                        <p>Countdown not available</p>
+                    {% endif %}
                 </div>
                 
                 <div class="card-right">
@@ -62,7 +95,35 @@
         {% else %}
         <p>No plants yet! Click "Add Plant" to get started.</p>
         {% endfor %}
+
+        
+
+        <div id="mood-info-modal" class="info-modal hidden">
+            <div class="info-modal-content">
+                <span id="close-mood-modal" class="close-btn">&times;</span>
+                
+                <h2>🌱 Plant Mood Guide 🌱</h2>
+                <ul class="mood-guide">
+                    <li>
+                        <img class="mood" src="{{ url_for('static', filename='Images/happy.png') }}" alt="Happy">
+                        <strong>Happy:</strong> Your plant is watered and healthy!
+                    </li>
+
+                    <li>
+                        <img class="mood" src="{{ url_for('static', filename='Images/water.png') }}" alt="Water"> 
+                        <strong>Neutral:</strong> It's watering day for this plant.
+                    </li>
+
+                    <li>
+                        <img class="mood" src="{{ url_for('static', filename='Images/sad.png') }}" alt="Sad"> 
+                        <strong>Sad:</strong> Your plant is overdue for watering.
+                    </li>
+                </ul>
+            </div>
+        </div>
     </main>
+
+
 
 </body>
 </html>

@@ -18,6 +18,7 @@ class Plant(db.Model):
     completes = db.relationship("Complete", back_populates="plant")
     user_id = db.mapped_column(db.Integer, db.ForeignKey("user.id"))
     owner = db.relationship("User", back_populates="plants")
+    countdown = None
 
     def completed(self):
         current_time = datetime.now().strftime("%B %d, %Y at %I:%M%p")
@@ -27,25 +28,21 @@ class Plant(db.Model):
         self.water_count += 1
 
     def count_down(self):
-        if not self.completes:    
-            # if the user never water the plant, they should water today
+        if not self.completes:
+            # If the plant has never been watered, it should be watered today
             return 0
 
-    def count_down(self):
-        if not self.completes:    
-            # if the user never water the plant, they should water today
-            return 0
+        try:
+            last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
+            days_since_last_watered = (datetime.now().date() - datetime.strptime(last_watered.date, "%B %d, %Y at %I:%M%p").date()).days
+            count_down = self.schedule - days_since_last_watered
+            return count_down
+        except Exception as e:
+            print(f"Error in count_down for plant {self.name}: {e}")
+            return None  # Return None if an error occurs
+
+
         
-        last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
-        days_since_last_watered = (datetime.now().date() - datetime.strptime(last_watered.date, "%B %d, %Y at %I:%M%p").date()).days
-        count_down = self.schedule - days_since_last_watered
-        return count_down
-        last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
-        days_since_last_watered = (datetime.now().date() - datetime.strptime(last_watered.date, "%B %d, %Y at %I:%M%p").date()).days
-        count_down = self.schedule - days_since_last_watered
-        return count_down
-
-    
 
 
     

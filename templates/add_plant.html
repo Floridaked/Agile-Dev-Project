@@ -35,5 +35,9 @@
                 <input type="submit" value="Add Plant">
             </form>
         </main>
+        <script>
+            let first_watered = document.querySelector("#first_watered")
+            first_watered.max = new Date().toISOString().split("T")[0];
+        </script>
 </body>
 </html>

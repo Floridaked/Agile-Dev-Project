@@ -4,7 +4,10 @@
 <head>
     <title>Plant Search</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/search_plant.js') }}" defer></script>
+
 </head>
+
 
 <body class="search-bg">
     <nav>
@@ -12,21 +15,72 @@
         <div class="nav-links">
             <a href="{{ url_for('plants') }}">My Plants</a>
             <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
     <main class="search-container">
         <h1>Search for a Plant</h1>
-        <p class="search-description">
-            Use the search bar below to find detailed information about your plants! Our database includes species names, watering frequencies, care instructions, growth stages, images, and more. 
-        </p>
+        
         <p class="search-description">Find the information you need to keep your plants happy and healthy today!
         </p>
-        <form method="POST" action="/results" class="search-form">
+        <form method="POST" action="/results"   class="search-form">
             <input type="text" name="query" placeholder="Enter plant name..." required>
             <button type="submit">Search</button>
-    </form>
+            </form>
+
+        <button id="info-icon" class="info-icon-btn" title="More info"><img src="static\Images\questionmark_g.png" alt="" style="height: 40pxl;width: 40px; margin: 10px;"></button>
+
     </main>
+
+
+
+    <div id="info-modal" class="info-modal hidden">
+        <div class="info-modal-content">
+            <span id="close-modal" class="close-btn">&times</span>
+            <p>
+                Use the search bar to find detailed information about your plants! Our database includes species names, watering frequencies, care instructions, growth stages, images, and more.
+            </p>
+        </div>
+    </div>
+
+
+
+    <main class="plant-gallery-container mt-5">
+        <div class="plant-gallery-header">
+            <h1>All Plants</h1>
+            <p class="gallery-description">
+                Explore our list of plants! Click on any plant to learn more about its care requirements.
+            </p>
+        </div>
+    
+        <!-- Plant Gallery -->
+        <div class="plant-grid">
+            {% if data.data %}
+            {% for plant in data.data %}
+            <a href="/plant/{{ plant.id }}" class="gallery-card-link">
+                <div class="gallery-card">
+                    <div class="gallery-image-wrapper">
+                        {% if plant.default_image %}
+                        <img src="{{ plant.default_image.thumbnail }}" class="gallery-card-img" alt="{{ plant.common_name }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/default_plant.jpg') }}" class="gallery-card-img" alt="Default Plant Image">
+                        {% endif %}
+                    </div>
+                    <div class="gallery-card-name">
+                        <strong>{{ plant.common_name or "No name" }}</strong>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <p>No plants found.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
 </body>
 
 </html>
