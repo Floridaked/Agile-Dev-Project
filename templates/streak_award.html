@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streak Award</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
+        <div class="nav-links">
+            <a href="{{ url_for('plants') }}">My Plants</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+
+    <main class="info-container">
+        <h1>🎉 Streak Award 🎉</h1>
+        <p>Your current {{ streak_type }} streak: <strong>{{ streak }}</strong></p>
+
+        {% if medal %}
+            <p>Congratulations! You've earned a <strong>{{ medal }}</strong> medal for your {{ streak_type }} streak!</p>
+            <img src="{{ url_for('static', filename='images/' + medal.lower() + '_medal.png') }}" alt="{{ medal }} Medal" style="max-width: 200px;">
+        {% else %}
+            <p>Keep going to earn your first medal for your {{ streak_type }} streak!</p>
+        {% endif %}
+
+        <a href="{{ url_for('plants') }}">← Back to My Plants</a>
+
+    </main>
+</body>
+</html>
