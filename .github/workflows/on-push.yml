@@ -43,7 +43,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Create pull request
-        run: gh pr create -B main -H ${{ github.ref_name }} --title "Merge ${{ github.ref_name }} into main" --body "Automatic PR from GitHub Actions"
+        run: gh pr create -B Develop -H ${{ github.ref_name }} --title "Merge ${{ github.ref_name }} into main" --body "Automatic PR from GitHub Actions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: Floridaked/Agile-Dev-Project
