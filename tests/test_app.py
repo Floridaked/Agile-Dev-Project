@@ -155,3 +155,4 @@ def test_plant_info_route(client):
     assert "Watering" in text
     assert "Sunlight" in text
     assert "Pruning" in text
+
