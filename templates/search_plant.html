@@ -65,31 +65,32 @@
         });
     </script>
 
-    <main class="container mt-5">
-        <h1>All Plants</h1>
-        <p class="search-description">
-            Explore our list of plants! Click on any plant to learn more about its care requirements.
-        </p>
+    <main class="plant-gallery-container mt-5">
+        <div class="plant-gallery-header">
+            <h1>All Plants</h1>
+            <p class="gallery-description">
+                Explore our list of plants! Click on any plant to learn more about its care requirements.
+            </p>
+        </div>
     
         <!-- Plant Gallery -->
-        <div class="row row-cols-4 g-4 mt-4">
+        <div class="plant-grid">
             {% if data.data %}
             {% for plant in data.data %}
-            <div class="col">
-                <div class="card h-100">
-                    {% if plant.default_image %}
-                    <img src="{{ plant.default_image.thumbnail }}" class="card-img-top" alt="{{ plant.common_name }}">
-                    {% else %}
-                    <img src="{{ url_for('static', filename='images/default_plant.jpg') }}" class="card-img-top"
-                        alt="Default Plant Image">
-                    {% endif %}
-                    <div class="plant-info">
-                        <strong>{{plant.common_name}}</strong> <br>
-                        {{ plant.scientific_name }}<br>
-                        <a href="/plant/{{ plant.id }}" class="details-link">View Details</a>
+            <a href="/plant/{{ plant.id }}" class="gallery-card-link">
+                <div class="gallery-card">
+                    <div class="gallery-image-wrapper">
+                        {% if plant.default_image %}
+                        <img src="{{ plant.default_image.thumbnail }}" class="gallery-card-img" alt="{{ plant.common_name }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/default_plant.jpg') }}" class="gallery-card-img" alt="Default Plant Image">
+                        {% endif %}
+                    </div>
+                    <div class="gallery-card-name">
+                        <strong>{{ plant.common_name or "No name" }}</strong>
                     </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
             {% else %}
             <div class="col-12">
