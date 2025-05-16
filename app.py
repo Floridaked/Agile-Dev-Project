@@ -328,18 +328,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        # Debug: Check if username exists
-        user = db.session.execute(db.select(User).where(User.username == username)).scalar()
-        if not user:
-            print(f"User '{username}' not found")
-            return "Invalid credentials", 401
-
-        # Debug: Check if password matches
-        if not user.check_password(password):
-            print(f"Invalid password for user '{username}'")
-            return "Invalid credentials", 401
-
+        
         # Successful login
         session['user_id'] = user.id
         session['username'] = user.username
