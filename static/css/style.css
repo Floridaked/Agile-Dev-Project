@@ -1015,6 +1015,7 @@ main {
     border-radius: 6px;
     border: 1px solid #ccc;
   }
+
   .register-container {
     max-width: 1000px;
     margin: 4rem auto 0; 
@@ -1026,6 +1027,15 @@ main {
   }
 
   .register-container input[type="text"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+.login-container input[type="password"] {
     height: 40px;
     padding: 0 0.75rem;
     width: 250px;
