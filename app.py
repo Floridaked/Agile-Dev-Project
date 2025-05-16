@@ -224,7 +224,7 @@ def water_plant(id):
             day_streak_medal = "Gold Streaker"
         elif user.day_streak == 30:  # 1 month
             day_streak_medal = "Silver Streaker"
-        elif user.day_streak == 7:  # 7 days
+        elif user.day_streak == 1:  # 7 days
             day_streak_medal = "Bronze Streaker"
 
         if day_streak_medal:
