@@ -6,6 +6,9 @@
     <title>My Plants</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
+    <script src="{{ url_for('static', filename='js/plants_page.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 
 </head>
 <body class="plants-bg">
@@ -20,16 +23,26 @@
     </nav>
 
     <main>
+        <div class="streak-info">
+            <h2>🌟 Your Streaks 🌟</h2>
+            <p><strong>Day Streak:</strong> {{ user.day_streak }} days</p>
+        </div>
+        
         <!-- Display flash messages for water streak -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <ul>
-                    {% for category, message in messages %}
-                        {% if category == "plant_streak" %}
-                            <li class="{{ category }}">{{ message }}</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                {% for category, message in messages %}
+                    {% if category == "plant_streak" or category == "day_streak" %}
+                        <div id="streak-modal" class="info-modal hidden">
+                            <div class="info-modal-content">
+                                <span id="close-streak-modal" class="close-btn">&times;</span>
+                                <h2>🏆 Achievement Unlocked 🏆</h2>
+                                <p>{{ message }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
             {% endif %}
         {% endwith %} 
 
@@ -45,7 +58,7 @@
 
 
         <div class="notification-section">
-            <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings">💡</button>
+            <button id="mood-info-icon" class="plant-info-icon-btn" title="Mood meanings"><img src="static\Images\questionmark_g.png" alt="" style="height: 40pxl;width: 40px;"></button>
 
             <div class="reminder">  
                 {% for plant in data %}
@@ -121,26 +134,10 @@
             </div>
         </div>
     </main>
+   
 
-    <script>
-        const moodIcon = document.getElementById("mood-info-icon");
-        const moodModal = document.getElementById("mood-info-modal");
-        const closeMood = document.getElementById("close-mood-modal");
 
-        moodIcon.addEventListener("click", () => {
-            moodModal.classList.remove("hidden");
-        });
 
-        closeMood.addEventListener("click", () => {
-            moodModal.classList.add("hidden");
-        });
-
-        window.addEventListener("click", (e) => {
-            if (e.target === moodModal) {
-                moodModal.classList.add("hidden");
-            }
-        });
-    </script>
 
 </body>
 </html>
