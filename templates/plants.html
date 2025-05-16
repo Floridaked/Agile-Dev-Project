@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plants_page.css') }}">
     <script src="{{ url_for('static', filename='js/plants_page.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 
 </head>
 <body class="plants-bg">
@@ -21,8 +23,11 @@
     </nav>
 
     <main>
-        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+        <div class="streak-info">
+            <h2>🌟 Your Streaks 🌟</h2>
+            <p><strong>Day Streak:</strong> {{ user.day_streak }} days</p>
+        </div>
+        
         <!-- Display flash messages for water streak -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
