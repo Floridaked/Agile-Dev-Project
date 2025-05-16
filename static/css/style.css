@@ -320,6 +320,7 @@ main {
   flex-grow: 1;
   text-align: left;
   font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .details-link {
@@ -590,6 +591,7 @@ main {
   padding: 1rem 1.5rem;
   margin-top: 2rem;
   height: 400px;
+  line-height: 1.6;
 }
 
 .log-box h3 {
