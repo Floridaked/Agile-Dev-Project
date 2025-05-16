@@ -3,7 +3,7 @@ from pathlib import Path
 from db import db
 from models import *
 from models.user import User, Achievement
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from pathlib import Path
 import requests as http_requests
 from dotenv import load_dotenv
@@ -31,6 +31,11 @@ def plants():
     user_id = session.get('user_id')
     if not user_id:
         return redirect(url_for('login'))
+    user = User.query.get(user_id)
+    if not user:
+        session.clear() 
+        return redirect(url_for('login'))
+ 
 
     user_id = session["user_id"]
     user = db.session.get(User, user_id)
@@ -39,9 +44,7 @@ def plants():
     plants = db.session.query(Plant).filter_by(user_id=user_id).all()
     print(f"Plants for user {user_id}: {plants}")  # Debug: Print the plants list
 
-    # Check if plants are being retrieved
-    if not plants:
-        print(f"No plants found for user {user_id}")  # Debug: No plants found
+    sad_plant_found = False  # Flag to track if any plant is sad
 
     for plant in plants:
         try:
@@ -51,6 +54,12 @@ def plants():
             plant.countdown = None  # Assign None if an error occurs
     
     plants = sorted(plants, key=lambda p: p.countdown)
+
+    # Reset day streak if any plant is sad
+    if sad_plant_found:
+        print(f"Sad plant found for user {user_id}. Resetting day streak.")
+        user.day_streak = 0
+        db.session.commit()
 
     # Check the total number of plants added by the user
     total_plants = len(plants)
@@ -167,6 +176,9 @@ def achievements():
     user_id = session['user_id']
     achievements = db.session.execute(db.select(Achievement).where(Achievement.user_id == user_id)).scalars().all()
 
+    # Sort achievements by the first letter of the second word in the medal name
+    achievements = sorted(achievements, key=lambda a: a.medal.split()[1][0])
+
     return render_template("achievement.html", achievements=achievements)
 
 @app.route("/watered/<int:id>", methods=["POST"])
@@ -190,7 +202,41 @@ def water_plant(id):
 
         # Increment the user's streak
         user.water_streak += 1
+
+                # Update the day streak
+        today = dt.now().date()
+        if user.last_active_date == today:
+            # User already active today, no change to streak
+            pass
+        elif user.last_active_date == today - timedelta(days=1):
+            # Increment streak if last active date was yesterday
+            user.day_streak += 1
+        else:
+            # Reset streak if last active date was not yesterday
+            user.day_streak = 1
+
+        user.last_active_date = today
         db.session.commit()
+
+        # Check if the user qualifies for a day streak medal
+        day_streak_medal = None
+        if user.day_streak == 90:  # 3 months
+            day_streak_medal = "Gold Streaker"
+        elif user.day_streak == 30:  # 1 month
+            day_streak_medal = "Silver Streaker"
+        elif user.day_streak == 7:  # 7 days
+            day_streak_medal = "Bronze Streaker"
+
+        if day_streak_medal:
+            # Save the medal to the Achievement table
+            existing_medal = db.session.query(Achievement).filter_by(user_id=user.id, medal=day_streak_medal).first()
+            if not existing_medal:
+                new_achievement = Achievement(user_id=user.id, medal=day_streak_medal)
+                db.session.add(new_achievement)
+                db.session.commit()
+
+                flash(f"Congratulations! You've earned a {day_streak_medal} medal for maintaining a {user.day_streak}-day streak!", "day_streak")
+
 
         # Check if the user qualifies for a reward
         medal = None
@@ -207,11 +253,12 @@ def water_plant(id):
             db.session.add(new_achievement)
             db.session.commit()
 
-            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak}", "water_streak")
+            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak} times", "water_streak")
 
     return redirect("/my_plants/" + str(id))
 
 api_key = os.getenv("API_KEY")
+
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
     response = http_requests.get(url) 

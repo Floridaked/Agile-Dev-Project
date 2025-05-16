@@ -6,31 +6,89 @@
     <title>Achievements</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="search-bg">
     <nav>
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('plants') }}">My Plants</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
 
-    <main class="info-container">
-        <h1>🏆 Achievements 🏆</h1>
+
+    <main class="achievement-container">
+        <div class="achievement-header">
+            
+            <button id="achievement-info-icon" class="achievement-icon-btn" title="Medal Guide">
+                <img src="{{ url_for('static', filename='Images/questionmark_g.png') }}" alt="Info" style="width: 30px; height: 30px;">
+            </button>
+            <h1>🏆 Achievements 🏆</h1>
+            
+        </div>
+
+        <div id="achievement-info-modal" class="info-modal hidden">
+            <div class="info-modal-content">
+                <span id="close-achievement-modal" class="close-btn">&times;</span>
+
+                <h2>🪴 Planter Medals 🪴</h2>
+                 <p>Earn medals as you grow your plant collection!</p>
+                 <ul class="achievement-guide">
+                    <li><img src="{{ url_for('static', filename='images/bronze.png') }}" class="small-medal-image"> Add 3 plants</li>
+
+                    <li><img src="{{ url_for('static', filename='images/silver.png') }}" class="small-medal-image"> Add 5 plants</li>
+
+                    <li><img src="{{ url_for('static', filename='images/gold.png') }}" class="small-medal-image"> Add 10 plants</li>
+                 </ul>
+
+                 <h2>💧 Waterer Medals 💧</h2>
+                 <p>Get rewarded for taking care of your plants!</p>
+                 <ul class="achievement-guide">
+                     <li><img src="{{ url_for('static', filename='images/bronze.png') }}" class="small-medal-image"> Water 3 plants</li>
+
+                     <li><img src="{{ url_for('static', filename='images/silver.png') }}" class="small-medal-image"> Water 5 plants</li>
+
+                     <li><img src="{{ url_for('static', filename='images/gold.png') }}" class="small-medal-image"> Water 10 plants</li>
+                 </ul>
+            </div>
+        </div>
 
         {% if achievements %}
-        <ul>
+        <div class="achievement-grid">
             {% for achievement in achievements %}
-            <li>
-                <img src="{{ url_for('static', filename='images/' + achievement.medal.lower() + '_medal.png') }}" 
-                     alt="{{ achievement.medal }} Medal" style="max-width: 100px;">
-                <p><strong>{{ achievement.medal }}</strong> Medal earned on {{ achievement.date_earned.strftime('%B %d, %Y') }}</p>
-            </li>
+            
+            <div class="achievement-card">
+                <h3 class="achievement-title">{{ achievement.medal }} {{ achievement.category }}</h3>
+                <img src="{{ url_for('static', filename='images/' + achievement.medal.split()[0]|lower + '.png') }}"
+                    alt="{{ achievement.medal }} Medal" class="medal-image">
+
+
+                
+                <p class="achievement-date"><strong>{{ achievement.medal }}</strong> Medal earned on {{ achievement.date_earned.strftime('%B %d, %Y') }}</p>
+            </div>
+            
             {% endfor %}
-        </ul>
+        </div>
         {% else %}
         <p>You haven't earned any medals yet. Keep going!</p>
         {% endif %}
     </main>
+
+    <script>
+        const icon = document.getElementById("achievement-info-icon");
+        const modal = document.getElementById("achievement-info-modal");
+        const closeBtn = document.getElementById("close-achievement-modal");
+
+        icon.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+
+    </script>
 </body>
 </html>

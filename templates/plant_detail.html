@@ -4,28 +4,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Details</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/plant_detail_page.js') }}" defer></script>
 </head>
 <body class="details-bg">
     <nav>
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-          <a href="{{ url_for('plants') }}">My Plants</a>
-          <a href="{{ url_for('search_plant') }}">Plant Info</a>
-          <a href="{{ url_for('achievements') }}">Achievements</a>
-          <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('plants') }}">My Plants</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
 
+
             <!-- Display flash messages for water streak -->
+            <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    <ul>
-                        {% for category, message in messages %}
-                            {% if category == "water_streak" %}
-                                <li class="{{ category }}">{{ message }}</li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+                    {% for category, message in messages %}
+                        {% if category == "water_streak" %}
+                            <div id="water-streak-modal" class="info-modal hidden">
+                                <div class="info-modal-content">
+                                    <span id="close-water-streak-modal" class="close-btn">&times;</span>
+                                    <h2>🏆 Achievement Unlocked 🏆</h2>
+                                    <p>{{ message }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             {% endwith %}
 
@@ -36,7 +44,7 @@
             <div class="plant-header">
                 <div class="plant-info">
                     <h2>{{ data.name }}</h2>
-                    <p>{{ data.type }}</p>
+                    <p><strong>Plant type:</strong> {{ data.plant_type }}</p>
                     <p><strong>Watering frequency:</strong> Every {{ data.schedule }} days</p>
                     <div class="action-buttons">
                         <form action="{{ url_for('edit_plant', id=data.id) }}" method="GET">
@@ -74,5 +82,7 @@
         
         
     </main>
+    
+
 </body>
 </html>
