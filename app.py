@@ -340,7 +340,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
+
+        user = db.session.execute(db.select(User).where(User.username == username)).scalar()
+
         # Successful login
         session['user_id'] = user.id
         session['username'] = user.username
