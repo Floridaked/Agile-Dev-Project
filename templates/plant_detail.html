@@ -18,6 +18,8 @@
 
 
             <!-- Display flash messages for water streak -->
+            <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -36,6 +38,26 @@
 
                                     if (waterModal) {
                                         waterModal.classList.remove("hidden");
+
+                                        for (let i = 0; i < 3; i++) {
+                                            setTimeout(() => {
+                                                confetti({
+                                                    particleCount: 200,
+                                                    angle: 90,
+                                                    spread: 100,
+                                                    startVelocity: 70,
+                                                    gravity: 0.6,
+                                                    ticks: 300,
+                                                    origin: { 
+                                                        x: 0.45 + Math.random() * 0.1,
+                                                        y: 0.5 
+                                                    },
+                                                    zIndex: 10000
+                                                });
+                                            }, i * 150);
+                                        }
+                                        
+                            
 
                                         closeBtn.addEventListener("click", () => {
                                             waterModal.classList.add("hidden");
@@ -99,5 +121,7 @@
         
         
     </main>
+    
+
 </body>
 </html>
