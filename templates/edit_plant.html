@@ -24,9 +24,19 @@
             <form action="{{ url_for('edit_plant', id=plant.id) }}" method="POST">
                 <label for="name">Plant Name:</label><br>
                 <input type="text" id="name" name="name" value="{{ plant.name }}" required><br><br>
+
+                <label for="plant_type">Is this an indoor or outdoor plant?</label><br>
+                <select id="plant_type" name="plant_type" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="Indoor">Indoor</option>
+                    <option value="Outdoor">Outdoor</option>
+                </select><br><br>
     
                 <label for="schedule">Watering Frequency (days):</label><br>
                 <input type="number" id="schedule" name="schedule" value="{{ plant.schedule }}" required><br><br>
+
+                <label for="first_watered">Last watered date:</label><br>
+                <input type="date" id="first_watered" name="first_watered" required><br><br>         
     
                 <input type="submit" value="Update Plant">
             </form>
