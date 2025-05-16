@@ -205,7 +205,7 @@ def water_plant(id):
             db.session.add(new_achievement)
             db.session.commit()
 
-            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak}", "water_streak")
+            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak} times", "water_streak")
 
     return redirect("/my_plants/" + str(id))
 
