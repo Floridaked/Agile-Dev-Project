@@ -35,21 +35,21 @@
                 <h2>🪴 Planter Medals 🪴</h2>
                  <p>Earn medals as you grow your plant collection!</p>
                  <ul class="achievement-guide">
-                    <li><img src="{{ url_for('static', filename='images/bronze.png') }}" class="small-medal-image"> Add 3 plants</li>
+                    <li><img src="{{ url_for('static', filename='images/bronze_planter_medal.png') }}" class="small-medal-image"> Add 3 plants</li>
 
-                    <li><img src="{{ url_for('static', filename='images/silver.png') }}" class="small-medal-image"> Add 5 plants</li>
+                    <li><img src="{{ url_for('static', filename='images/silver_planter_medal.png') }}" class="small-medal-image"> Add 5 plants</li>
 
-                    <li><img src="{{ url_for('static', filename='images/gold.png') }}" class="small-medal-image"> Add 10 plants</li>
+                    <li><img src="{{ url_for('static', filename='images/gold_planter_medal.png') }}" class="small-medal-image"> Add 10 plants</li>
                  </ul>
 
                  <h2>💧 Waterer Medals 💧</h2>
                  <p>Get rewarded for taking care of your plants!</p>
                  <ul class="achievement-guide">
-                     <li><img src="{{ url_for('static', filename='images/bronze.png') }}" class="small-medal-image"> Water 3 plants</li>
+                     <li><img src="{{ url_for('static', filename='images/bronze_waterer_medal.png') }}" class="small-medal-image"> Water 3 plants</li>
 
-                     <li><img src="{{ url_for('static', filename='images/silver.png') }}" class="small-medal-image"> Water 5 plants</li>
+                     <li><img src="{{ url_for('static', filename='images/silver_waterer_medal.png') }}" class="small-medal-image"> Water 5 plants</li>
 
-                     <li><img src="{{ url_for('static', filename='images/gold.png') }}" class="small-medal-image"> Water 10 plants</li>
+                     <li><img src="{{ url_for('static', filename='images/gold_waterer_medal.png') }}" class="small-medal-image"> Water 10 plants</li>
                  </ul>
             </div>
         </div>
@@ -60,7 +60,7 @@
             
             <div class="achievement-card">
                 <h3 class="achievement-title">{{ achievement.medal }} {{ achievement.category }}</h3>
-                <img src="{{ url_for('static', filename='images/' + achievement.medal.split()[0]|lower + '.png') }}"
+                <img src="{{ url_for('static', filename='images/' + achievement.medal.replace(' ', '_').lower() + '_medal' + '.png') }}"
                     alt="{{ achievement.medal }} Medal" class="medal-image">
 
 
