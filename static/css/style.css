@@ -351,15 +351,33 @@ main {
     display: flex;
     justify-content: center;
     margin-top: 4rem; 
+    
     padding: 2rem;
   }
   .form-container {
     background: #dfe7dc;
-    padding: 40px;
+    padding: 60px;
     border-radius: 16px;
-    width: 500px;
+    width: 700px;
+    height: fit-content;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding-left: 9rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container input[type="date"] {
+  height: 40px;
+  padding: 0 0.75rem;
+  width: 80%;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+ 
+}
+
   .addplant-bg {
     background-image: url("../images/addplantbg.png");
     background-size: cover;
