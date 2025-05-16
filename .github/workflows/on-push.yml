@@ -2,8 +2,8 @@ name: Test Python Application
 
 on:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - Develop
 
 jobs:
   build:
