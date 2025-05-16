@@ -17,10 +17,10 @@ load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.instance_path = Path(".").resolve()
-
+#ff sdfsdd
 db.init_app(app)
 app.secret_key = 'secret-key????'
-
+# ddd
 @app.route("/") 
 def home(): 
     session.clear()
