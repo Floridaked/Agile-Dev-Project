@@ -3,7 +3,7 @@ from pathlib import Path
 from db import db
 from models import *
 from models.user import User, Achievement
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from pathlib import Path
 import requests as http_requests
 from dotenv import load_dotenv
@@ -188,6 +188,20 @@ def water_plant(id):
 
         # Increment the user's streak
         user.water_streak += 1
+
+                # Update the day streak
+        today = dt.now().date()
+        if user.last_active_date == today:
+            # User already active today, no change to streak
+            pass
+        elif user.last_active_date == today - timedelta(days=1):
+            # Increment streak if last active date was yesterday
+            user.day_streak += 1
+        else:
+            # Reset streak if last active date was not yesterday
+            user.day_streak = 1
+
+        user.last_active_date = today
         db.session.commit()
 
         # Check if the user qualifies for a reward

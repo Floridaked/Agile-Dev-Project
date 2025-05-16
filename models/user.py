@@ -20,6 +20,9 @@ class User(db.Model):
     password_hash = db.mapped_column(db.String, nullable=False)
     water_streak = db.mapped_column(db.Integer, default=0)
     plant_streak = db.mapped_column(db.Integer, default=0)
+    day_streak = db.mapped_column(db.Integer, default=0)  # New field for day streak
+    last_active_date = db.mapped_column(db.Date, nullable=True)  # New field for last active date
+
 
     # Define the relationship with Achievement
     achievements = db.relationship("Achievement", back_populates="user", cascade="all, delete-orphan")

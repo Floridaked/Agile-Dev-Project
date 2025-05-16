@@ -17,12 +17,12 @@
 
     <main class="info-container">
         <h1>🏆 Achievements 🏆</h1>
-
+    
         {% if achievements %}
         <ul>
             {% for achievement in achievements %}
             <li>
-                <img src="{{ url_for('static', filename='images/' + achievement.medal.lower() + '_medal.png') }}" 
+                <img src="{{ url_for('static', filename='images/' + achievement.medal.lower().replace(' ', '_') + '_medal.png') }}" 
                      alt="{{ achievement.medal }} Medal" style="max-width: 100px;">
                 <p><strong>{{ achievement.medal }}</strong> Medal earned on {{ achievement.date_earned.strftime('%B %d, %Y') }}</p>
             </li>
