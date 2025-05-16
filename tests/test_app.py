@@ -1,9 +1,7 @@
 import pytest
 from app import app as flask_app
 from db import db
-from models.user import User
-from models.plant import Plant
-from models.complete import Complete
+from models import *
 from datetime import datetime
 from flask import *
 
@@ -17,6 +15,7 @@ def app():
     with flask_app.app_context():
         db.create_all()
         yield flask_app
+        db.session.remove()
         db.drop_all()
 
 @pytest.fixture
@@ -32,6 +31,15 @@ def init_user(app):
         db.session.commit()
         user = db.session.execute(db.select(User).where(User.username =="testuser")).scalar()
         return user
+    
+@pytest.fixture
+def init_plant(app, init_user):
+    with app.app_context():
+        plant = Plant(name="Aloe", schedule=3, user_id=init_user.id, plant_type="flower")
+        db.session.add(plant)
+        db.session.commit()
+        plant = db.session.execute(db.select(Plant).where(Plant.name =="Aloe")).scalar()
+        return plant
 
 # ---------- UNIT TESTS ----------
 
@@ -147,8 +155,12 @@ def test_delete_plant(client, app, init_user):
 def decode_response(response):
     return response.data.decode("utf-8")
 
-def test_plant_info_route(client):
+def test_plant_info_route(client, init_user):
+    with client.session_transaction() as sess:
+        sess['user_id'] = init_user.id
+
     response = client.get("/plant/1")
+
     if response.status_code == 404:
         pytest.skip("Plant with ID 1 not found in CI")
     assert response.status_code == 200
@@ -158,3 +170,66 @@ def test_plant_info_route(client):
     assert "Sunlight" in text
     assert "Pruning" in text
 
+def test_medal_awarding(client, init_user):
+    with client.session_transaction() as sess:
+        db.session.commit()
+        sess['user_id'] = init_user.id
+    for i in range(3):
+        plant = Plant(name=f"Plant{i}", schedule=7,plant_type="outdoor", user_id=init_user.id)
+        db.session.add(plant)
+    db.session.commit()
+
+    response = client.get("/my_plants")
+    assert response.status_code == 200
+  
+    achievement =  db.session.execute(db.select(Achievement).where((Achievement.user_id == init_user.id) & (Achievement.medal == "Bronze Planter"))).scalar()
+    assert achievement is not None
+
+
+def test_plant_detail_route(client, app, init_user, init_plant):
+   
+    response = client.get(f"/my_plants/{init_plant.id}")
+    with client.session_transaction() as sess:
+        sess['user_id'] = init_user.id
+
+    response = client.get("/my_plants/99999")
+    assert response.status_code == 404
+    assert b"Plant not found" in response.data
+
+
+    response = client.get(f"/my_plants/{init_plant.id}")
+    assert response.status_code == 200
+    assert b"Watering log" in response.data
+
+def test_edit_plant_get_and_post(client, init_user, init_plant):
+  
+    with client.session_transaction() as sess:
+        sess["user_id"] = init_user.id
+
+    response = client.get(f"/edit_plant/{init_plant.id}")
+    assert response.status_code == 200
+
+    response = client.post(f"/edit_plant/{init_plant.id}", data={"name": "Updated Plant", "schedule": "10"}, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"My Plants" in response.data
+
+    updated_plant = db.session.get(Plant, init_plant.id)
+    assert updated_plant.name == "Updated Plant"
+    assert updated_plant.schedule == 10
+
+def test_achievements_route(client, init_user):
+    achievement = Achievement(user_id=init_user.id, medal="Bronze Planter")
+    db.session.add(achievement)
+    db.session.commit()
+
+    with client.session_transaction() as sess:
+        sess["user_id"] = init_user.id
+
+    response = client.get("/achievements")
+    assert response.status_code == 200
+    assert b"Bronze Planter" in response.data
+
+def test_search_plant_route(client):
+    response = client.get("/search_plant")
+    assert response.status_code == 200
+    assert b"Search" in response.data or b"Plant" in response.data
