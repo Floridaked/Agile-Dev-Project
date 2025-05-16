@@ -377,6 +377,16 @@ main {
   box-sizing: border-box;
  
 }
+.form-container select {
+  height: 40px;
+  padding: 0 0.75rem;
+  width: 80%;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background-color: white;
+}
 
   .addplant-bg {
     background-image: url("../images/addplantbg.png");
@@ -385,6 +395,7 @@ main {
     background-position: center center;
     background-attachment: fixed;
   }
+  
   
   
   /*my plants page */
