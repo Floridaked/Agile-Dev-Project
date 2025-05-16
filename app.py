@@ -28,7 +28,8 @@ def home():
 
 @app.route("/my_plants")
 def plants():
-    if 'user_id' not in session:
+    user_id = session.get('user_id')
+    if not user_id:
         return redirect(url_for('login'))
 
     user_id = session["user_id"]
@@ -78,6 +79,8 @@ def plants():
 
 @app.route("/my_plants/<int:id>") 
 def plant_detail(id):   
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     stmt        = db.select(Plant).where(Plant.id == id) 
     plant       = db.session.execute(stmt).scalar()
     stmt        = db.select(Complete).where(Complete.plant_id == id)
@@ -109,6 +112,8 @@ def add_plant():
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     if request.method == "POST":
         name = request.form["name"]
         schedule = int(request.form["schedule"])
@@ -223,6 +228,8 @@ def get_plant_details(id):
 
 @app.route("/plant/<int:id>")
 def plant_info(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     detail_data = get_plant_details(id)
     if "data" not in detail_data or not detail_data["data"]:
         return "No plant details found", 404
