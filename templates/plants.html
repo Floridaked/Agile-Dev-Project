@@ -32,7 +32,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    {% if category == "plant_streak" %}
+                    {% if category == "plant_streak" or category == "day_streak" %}
                         <div id="streak-modal" class="info-modal hidden">
                             <div class="info-modal-content">
                                 <span id="close-streak-modal" class="close-btn">&times;</span>

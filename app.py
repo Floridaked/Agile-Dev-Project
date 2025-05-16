@@ -38,9 +38,7 @@ def plants():
     plants = db.session.query(Plant).filter_by(user_id=user_id).all()
     print(f"Plants for user {user_id}: {plants}")  # Debug: Print the plants list
 
-    # Check if plants are being retrieved
-    if not plants:
-        print(f"No plants found for user {user_id}")  # Debug: No plants found
+    sad_plant_found = False  # Flag to track if any plant is sad
 
     for plant in plants:
         try:
@@ -50,6 +48,12 @@ def plants():
             plant.countdown = None  # Assign None if an error occurs
     
     plants = sorted(plants, key=lambda p: p.countdown)
+
+    # Reset day streak if any plant is sad
+    if sad_plant_found:
+        print(f"Sad plant found for user {user_id}. Resetting day streak.")
+        user.day_streak = 0
+        db.session.commit()
 
     # Check the total number of plants added by the user
     total_plants = len(plants)
@@ -203,6 +207,26 @@ def water_plant(id):
 
         user.last_active_date = today
         db.session.commit()
+
+        # Check if the user qualifies for a day streak medal
+        day_streak_medal = None
+        if user.day_streak == 90:  # 3 months
+            day_streak_medal = "Gold Streaker"
+        elif user.day_streak == 30:  # 1 month
+            day_streak_medal = "Silver Streaker"
+        elif user.day_streak == 7:  # 7 days
+            day_streak_medal = "Bronze Streaker"
+
+        if day_streak_medal:
+            # Save the medal to the Achievement table
+            existing_medal = db.session.query(Achievement).filter_by(user_id=user.id, medal=day_streak_medal).first()
+            if not existing_medal:
+                new_achievement = Achievement(user_id=user.id, medal=day_streak_medal)
+                db.session.add(new_achievement)
+                db.session.commit()
+
+                flash(f"Congratulations! You've earned a {day_streak_medal} medal for maintaining a {user.day_streak}-day streak!", "day_streak")
+
 
         # Check if the user qualifies for a reward
         medal = None
