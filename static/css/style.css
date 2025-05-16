@@ -810,29 +810,9 @@ main {
   display: none;
 }
 
-  .login-container {
-    max-width: 700px;
-    margin: 4rem auto 0; 
-    padding: 2rem;
-    background-color: whitesmoke;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-  }
+  
 
-  .register-container {
-    max-width: 700px;
-    margin: 4rem auto 0; 
-    padding: 2rem;
-    background-color: whitesmoke;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-  }
-
-  .login-form {
-   
-  }
+  
 
   .button-linksearch_plant {
   border: none;
@@ -1016,3 +996,40 @@ main {
   background: none !important;
   color: inherit;
 }
+
+/* register and login */
+.login-container {
+    max-width: 1000px;
+    margin: 4rem auto 0; 
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+.login-container input[type="text"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .register-container {
+    max-width: 1000px;
+    margin: 4rem auto 0; 
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .register-container input[type="text"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
