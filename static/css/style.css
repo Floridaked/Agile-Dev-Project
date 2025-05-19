@@ -544,6 +544,11 @@ main {
   margin: 0;
   font-size: 1.5rem;
 }
+.plant-info .mood{
+  position: absolute;
+  top: 2rem;
+  right: 1.5rem;
+}
 
 .action-buttons {
   display: flex;
@@ -577,7 +582,7 @@ main {
 
 .pill-btn.water-now {
   position: absolute;
-  top: 2rem;
+  top: 7rem;
   right: 2rem;
   background-color: #c7d7c1;
   color: #444;

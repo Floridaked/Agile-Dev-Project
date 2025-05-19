@@ -63,6 +63,17 @@
                     <h2>{{ data.name }}</h2>
                     <p><strong>Plant type:</strong> {{ data.plant_type }}</p>
                     <p><strong>Watering frequency:</strong> Every {{ data.schedule }} days</p>
+
+                     {% if data.countdown is not none and data.countdown > 0 %}
+                        <img class="mood" src="/static/Images/happy.png">
+                    {% elif data.countdown == 0 %}
+                        <img class="mood" src="/static/Images/water.png">
+                    {% elif data.countdown is not none %}
+                        <img class="mood" src="/static/Images/sad.png">
+                    {% else %}
+                        <img class="mood" src="/static/Images/unknown.png">
+                    {% endif %}
+
                     <div class="action-buttons">
                         <form action="{{ url_for('edit_plant', id=data.id) }}" method="GET">
                             <button type="submit" class="pill-btn edit">Edit</button>

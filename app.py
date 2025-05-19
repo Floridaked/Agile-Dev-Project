@@ -97,6 +97,13 @@ def plant_detail(id):
     completed   = list(db.session.execute(stmt).scalars())
     if not plant:
         return "Plant not found", 404
+    
+    try:
+        plant.countdown = plant.count_down()  # Call the count_down method
+    except Exception as e:
+        print(f"Error calculating countdown for plant {plant.name}: {e}")
+        plant.countdown = None  # Assign None if an error occurs
+    
     return render_template("plant_detail.html", data=plant, complete=completed)
 
 
