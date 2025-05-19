@@ -596,7 +596,8 @@ main {
   border-radius: 15px;
   padding: 1rem 1.5rem;
   margin-top: 2rem;
-  height: 400px;
+  max-height: 400px;
+  overflow-y: auto;
   line-height: 1.6;
 }
 
@@ -1089,6 +1090,15 @@ html, body {
   padding: 1rem;
   font-size: 0.95rem;
   color: #444;
+
+}
+.details-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 12em;
 
 }
 .plants-footer {
