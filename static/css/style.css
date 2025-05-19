@@ -1022,8 +1022,8 @@ main {
   }
 
   .register-container {
-    max-width: 1000px;
-    margin: 4rem auto 0; 
+    max-width: 400px;
+    width: 100%;
     padding: 2rem;
     background-color: whitesmoke;
     border-radius: 12px;
@@ -1056,3 +1056,55 @@ main {
     border-radius: 6px;
     border: 1px solid #ccc;
   }
+  .register-btn {
+    margin-bottom: 1rem;
+  }
+
+  /*  footer */
+  .page-content {
+  flex: 1;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  padding: 2rem 1rem;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+
+
+.site-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+
+}
+.plants-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 27em;
+}
+
+.ach-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 37rem;
+}
