@@ -15,6 +15,7 @@ class Plant(db.Model):
     watered     = db.mapped_column(db.Boolean, default=False)
     last_watered = db.mapped_column(db.String, default="Never")
     water_count = db.mapped_column(db.Integer, default=0)
+    streak      = db.mapped_column(db.Integer, default=1)
     completes = db.relationship("Complete", back_populates="plant")
     user_id = db.mapped_column(db.Integer, db.ForeignKey("user.id"))
     owner = db.relationship("User", back_populates="plants")
@@ -26,6 +27,12 @@ class Plant(db.Model):
         db.session.add(new_complete)
         self.watered = True
         self.water_count += 1
+
+         # Increment streak if the plant is not sad
+        if self.count_down() >= 0:
+            self.streak += 1
+        else:
+            self.streak = 0  # Reset streak if the plant is sad
 
     def count_down(self):
         if not self.completes:
@@ -41,6 +48,15 @@ class Plant(db.Model):
             print(f"Error in count_down for plant {self.name}: {e}")
             return None  # Return None if an error occurs
 
+    def was_watered_today(self):
+        """Check if the plant was watered today."""
+        if not self.completes:
+            return False
+        last_watered = db.session.query(Complete).where(Complete.plant_id == self.id).order_by(desc(Complete.date)).first()
+        if last_watered:
+            last_watered_date = datetime.strptime(last_watered.date, "%B %d, %Y at %I:%M%p").date()
+            return last_watered_date == datetime.now().date()
+        return False
 
         
 

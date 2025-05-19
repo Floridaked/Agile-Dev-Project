@@ -6,6 +6,7 @@ from models.user import User, Achievement
 from datetime import datetime as dt, timedelta
 from pathlib import Path
 import requests as http_requests
+import time
 from dotenv import load_dotenv
 import os
 
@@ -192,6 +193,15 @@ def water_plant(id):
     plant = db.session.execute(stmt).scalar()
 
     if plant:
+        # Check if the plant was already watered today
+        if plant.was_watered_today():
+            flash(f"Plant '{plant.name}' has already been watered today. You cannot water it again.", "info")
+            return redirect("/my_plants/" + str(id))
+        
+        if plant.count_down() > 0:
+            flash(f"Plant '{plant.name}' does not need watering yet. Try again in {plant.count_down()} days.", "warning")
+            return redirect("/my_plants/" + str(id))
+
         plant.completed()
         db.session.commit()
 
@@ -200,10 +210,11 @@ def water_plant(id):
         if not user:
             return redirect(url_for('login'))
 
+
         # Increment the user's streak
         user.water_streak += 1
 
-                # Update the day streak
+        # Update the day streak
         today = dt.now().date()
         if user.last_active_date == today:
             # User already active today, no change to streak

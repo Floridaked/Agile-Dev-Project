@@ -21,6 +21,7 @@
             <!-- Display flash messages for water streak -->
             <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+            <!-- Modal for water streak (with confetti) -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -29,6 +30,22 @@
                                 <div class="info-modal-content">
                                     <span id="close-water-streak-modal" class="close-btn">&times;</span>
                                     <h2>🏆 Achievement Unlocked 🏆</h2>
+                                    <p>{{ message }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <!-- Modal for info or warning (no confetti) -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == "info" or category == "warning" %}
+                            <div id="info-warning-modal" class="info-modal hidden">
+                                <div class="info-modal-content">
+                                    <span id="close-info-warning-modal" class="close-btn">&times;</span>
                                     <p>{{ message }}</p>
                                 </div>
                             </div>
