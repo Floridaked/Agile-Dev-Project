@@ -100,7 +100,7 @@
                 </div>
                 
                 <div class="card-right">
-                    {% if plant.countdown is not none and plant.countdown < 0 %}
+                    {% if plant.countdown is not none and plant.countdown <= 0 %}
                         <button class="water-btn">Water Now</button>
                     {% else %}
                         <button class="water-btn"><strong>Streak:</strong> {{ plant.streak }} days</button>
