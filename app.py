@@ -3,9 +3,10 @@ from pathlib import Path
 from db import db
 from models import *
 from models.user import User, Achievement
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from pathlib import Path
 import requests as http_requests
+import time
 from dotenv import load_dotenv
 import os
 
@@ -17,10 +18,10 @@ load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.instance_path = Path(".").resolve()
-
+#ff sdfsdd
 db.init_app(app)
 app.secret_key = 'secret-key????'
-
+# ddd
 @app.route("/") 
 def home(): 
     session.clear()
@@ -28,8 +29,14 @@ def home():
 
 @app.route("/my_plants")
 def plants():
-    if 'user_id' not in session:
+    user_id = session.get('user_id')
+    if not user_id:
         return redirect(url_for('login'))
+    user = User.query.get(user_id)
+    if not user:
+        session.clear() 
+        return redirect(url_for('login'))
+ 
 
     user_id = session["user_id"]
     user = db.session.get(User, user_id)
@@ -38,9 +45,7 @@ def plants():
     plants = db.session.query(Plant).filter_by(user_id=user_id).all()
     print(f"Plants for user {user_id}: {plants}")  # Debug: Print the plants list
 
-    # Check if plants are being retrieved
-    if not plants:
-        print(f"No plants found for user {user_id}")  # Debug: No plants found
+    sad_plant_found = False  # Flag to track if any plant is sad
 
     for plant in plants:
         try:
@@ -50,6 +55,12 @@ def plants():
             plant.countdown = None  # Assign None if an error occurs
     
     plants = sorted(plants, key=lambda p: p.countdown)
+
+    # Reset day streak if any plant is sad
+    if sad_plant_found:
+        print(f"Sad plant found for user {user_id}. Resetting day streak.")
+        user.day_streak = 0
+        db.session.commit()
 
     # Check the total number of plants added by the user
     total_plants = len(plants)
@@ -78,12 +89,21 @@ def plants():
 
 @app.route("/my_plants/<int:id>") 
 def plant_detail(id):   
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     stmt        = db.select(Plant).where(Plant.id == id) 
     plant       = db.session.execute(stmt).scalar()
     stmt        = db.select(Complete).where(Complete.plant_id == id)
     completed   = list(db.session.execute(stmt).scalars())
     if not plant:
         return "Plant not found", 404
+    
+    try:
+        plant.countdown = plant.count_down()  # Call the count_down method
+    except Exception as e:
+        print(f"Error calculating countdown for plant {plant.name}: {e}")
+        plant.countdown = None  # Assign None if an error occurs
+    
     return render_template("plant_detail.html", data=plant, complete=completed)
 
 
@@ -109,6 +129,8 @@ def add_plant():
 #for adding plants need to create javascript and connect to home.html where we can have add plants form
 @app.route("/add_plant", methods=["GET", "POST"])
 def add_plant_page():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     if request.method == "POST":
         name = request.form["name"]
         schedule = int(request.form["schedule"])
@@ -178,6 +200,15 @@ def water_plant(id):
     plant = db.session.execute(stmt).scalar()
 
     if plant:
+        # Check if the plant was already watered today
+        if plant.was_watered_today():
+            flash(f"Plant '{plant.name}' has already been watered today. You cannot water it again.", "info")
+            return redirect("/my_plants/" + str(id))
+        
+        if plant.count_down() > 0:
+            flash(f"Plant '{plant.name}' does not need watering yet. Try again in {plant.count_down()} days.", "warning")
+            return redirect("/my_plants/" + str(id))
+
         plant.completed()
         db.session.commit()
 
@@ -186,9 +217,44 @@ def water_plant(id):
         if not user:
             return redirect(url_for('login'))
 
+
         # Increment the user's streak
         user.water_streak += 1
+
+        # Update the day streak
+        today = dt.now().date()
+        if user.last_active_date == today:
+            # User already active today, no change to streak
+            pass
+        elif user.last_active_date == today - timedelta(days=1):
+            # Increment streak if last active date was yesterday
+            user.day_streak += 1
+        else:
+            # Reset streak if last active date was not yesterday
+            user.day_streak = 1
+
+        user.last_active_date = today
         db.session.commit()
+
+        # Check if the user qualifies for a day streak medal
+        day_streak_medal = None
+        if user.day_streak == 90:  # 3 months
+            day_streak_medal = "Gold Streaker"
+        elif user.day_streak == 30:  # 1 month
+            day_streak_medal = "Silver Streaker"
+        elif user.day_streak == 7:  # 7 days
+            day_streak_medal = "Bronze Streaker"
+
+        if day_streak_medal:
+            # Save the medal to the Achievement table
+            existing_medal = db.session.query(Achievement).filter_by(user_id=user.id, medal=day_streak_medal).first()
+            if not existing_medal:
+                new_achievement = Achievement(user_id=user.id, medal=day_streak_medal)
+                db.session.add(new_achievement)
+                db.session.commit()
+
+                flash(f"Congratulations! You've earned a {day_streak_medal} medal for maintaining a {user.day_streak}-day streak!", "day_streak")
+
 
         # Check if the user qualifies for a reward
         medal = None
@@ -205,11 +271,12 @@ def water_plant(id):
             db.session.add(new_achievement)
             db.session.commit()
 
-            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak}", "water_streak")
+            flash(f"Congratulations! You've earned a {medal} medal for watering your plant {user.water_streak} times", "water_streak")
 
     return redirect("/my_plants/" + str(id))
 
 api_key = os.getenv("API_KEY")
+
 def get_plant_info(query):
     url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
     response = http_requests.get(url) 
@@ -226,6 +293,8 @@ def get_plant_details(id):
 
 @app.route("/plant/<int:id>")
 def plant_info(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     detail_data = get_plant_details(id)
     if "data" not in detail_data or not detail_data["data"]:
         return "No plant details found", 404
@@ -290,16 +359,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Debug: Check if username exists
         user = db.session.execute(db.select(User).where(User.username == username)).scalar()
-        if not user:
-            print(f"User '{username}' not found")
-            return "Invalid credentials", 401
-
-        # Debug: Check if password matches
-        if not user.check_password(password):
-            print(f"Invalid password for user '{username}'")
-            return "Invalid credentials", 401
 
         # Successful login
         session['user_id'] = user.id
@@ -312,6 +372,6 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('home'))
-
+# dsfse
 if __name__ == "__main__":
     app.run(debug=True, port=8888)

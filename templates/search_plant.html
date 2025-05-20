@@ -14,11 +14,12 @@
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('plants') }}">My Plants</a>
-            <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
+
     <main class="search-container">
         <h1>Search for a Plant</h1>
         
@@ -64,7 +65,8 @@
                         {% if plant.default_image %}
                         <img src="{{ plant.default_image.thumbnail }}" class="gallery-card-img" alt="{{ plant.common_name }}">
                         {% else %}
-                        <img src="{{ url_for('static', filename='images/default_plant.jpg') }}" class="gallery-card-img" alt="Default Plant Image">
+                        <h4 class="gallery-card-name">Sorry no Image</h4>
+                        <img src="static/Images/happy.png" class="gallery-card-img" alt="Sorry no Image☹️">
                         {% endif %}
                     </div>
                     <div class="gallery-card-name">
@@ -80,7 +82,9 @@
             {% endif %}
         </div>
     </main>
-
+    <footer class="site-footer">
+      <p>© 2025 Sprout Spot 🌱 All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

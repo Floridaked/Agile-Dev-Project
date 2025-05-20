@@ -10,11 +10,13 @@
     <nav>
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
-          <a href="{{ url_for('plants') }}">My Plants</a>
-          <a href="{{ url_for('search_plant') }}">Search</a>
-          <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('plants') }}">My Plants</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
+            <a href="{{ url_for('achievements') }}">Achievements</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
+
 
     <div class="center-wrapper">
         <main class="form-container">
@@ -23,8 +25,12 @@
                 <label for="name">Plant Name:</label><br>
                 <input type="text" id="name" name="name" placeholder="Enter a plant name" required><br><br>
 
-                <label for="plant_type">Type :</label><br>
-                <input type="text" id="plant_type" name="plant_type" placeholder="eg. Outdoor" required><br><br>
+                <label for="plant_type">Is this an indoor or outdoor plant?</label><br>
+                <select id="plant_type" name="plant_type" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="Indoor">Indoor</option>
+                    <option value="Outdoor">Outdoor</option>
+                </select><br><br>
 
                 <label for="schedule">Watering Frequency (days):</label><br>
                 <input type="number" id="schedule" name="schedule" required><br><br>
@@ -39,5 +45,7 @@
             let first_watered = document.querySelector("#first_watered")
             first_watered.max = new Date().toISOString().split("T")[0];
         </script>
+
+        
 </body>
 </html>

@@ -11,11 +11,12 @@
         <h2><a href="{{ url_for('plants') }}">🌱 Sprout Spot</a></h2>
         <div class="nav-links">
             <a href="{{ url_for('plants') }}">My Plants</a>
-            <a href="{{ url_for('add_plant_page') }}">Add Plant</a>
+            <a href="{{ url_for('search_plant') }}">Plant Info</a>
             <a href="{{ url_for('achievements') }}">Achievements</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
+
     <main class="result-container">
         <h1>Results for "{{ query }}"</h1>
 
@@ -43,6 +44,9 @@
 
         
     </main>
+    <footer class="site-footer">
+      <p>© 2025 Sprout Spot 🌱 All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

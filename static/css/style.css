@@ -241,7 +241,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
 }
 
 
@@ -254,6 +254,7 @@ main {
   font-size: 1rem;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   position: relative;
+  text-align: left;
 }
 
 /* close  */
@@ -320,6 +321,7 @@ main {
   flex-grow: 1;
   text-align: left;
   font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .details-link {
@@ -351,15 +353,43 @@ main {
     display: flex;
     justify-content: center;
     margin-top: 4rem; 
+    
     padding: 2rem;
   }
   .form-container {
     background: #dfe7dc;
-    padding: 40px;
+    padding: 60px;
     border-radius: 16px;
-    width: 500px;
+    width: 700px;
+    height: fit-content;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding-left: 9rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container input[type="date"] {
+  height: 40px;
+  padding: 0 0.75rem;
+  width: 80%;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+ 
+}
+.form-container select {
+  height: 40px;
+  padding: 0 0.75rem;
+  width: 80%;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background-color: white;
+}
+
   .addplant-bg {
     background-image: url("../images/addplantbg.png");
     background-size: cover;
@@ -367,6 +397,7 @@ main {
     background-position: center center;
     background-attachment: fixed;
   }
+  
   
   
   /*my plants page */
@@ -513,6 +544,11 @@ main {
   margin: 0;
   font-size: 1.5rem;
 }
+.plant-info .mood{
+  position: absolute;
+  top: 2rem;
+  right: 1.5rem;
+}
 
 .action-buttons {
   display: flex;
@@ -546,7 +582,7 @@ main {
 
 .pill-btn.water-now {
   position: absolute;
-  top: 2rem;
+  top: 7rem;
   right: 2rem;
   background-color: #c7d7c1;
   color: #444;
@@ -560,7 +596,9 @@ main {
   border-radius: 15px;
   padding: 1rem 1.5rem;
   margin-top: 2rem;
-  height: 400px;
+  max-height: 400px;
+  overflow-y: auto;
+  line-height: 1.6;
 }
 
 .log-box h3 {
@@ -761,6 +799,7 @@ main {
   max-width: 500px;
   width: 90%;
   font-size: 1rem;
+  text-align: center;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   position: relative;
 }
@@ -777,29 +816,9 @@ main {
   display: none;
 }
 
-  .login-container {
-    max-width: 700px;
-    margin: 4rem auto 0; 
-    padding: 2rem;
-    background-color: whitesmoke;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-  }
+  
 
-  .register-container {
-    max-width: 700px;
-    margin: 4rem auto 0; 
-    padding: 2rem;
-    background-color: whitesmoke;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-  }
-
-  .login-form {
-   
-  }
+  
 
   .button-linksearch_plant {
   border: none;
@@ -891,3 +910,211 @@ main {
   margin-bottom: 0.5rem;
 }
 
+/* achievement */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem 4rem;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.achievement-card {
+  background-color: #f5f9f4;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  padding: 2rem 1.5rem;
+  transition: transform 0.2s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.achievement-card:hover {
+  transform: scale(1.03);
+}
+
+.medal-image {
+  width: 120px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.achievement-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #356859;
+}
+
+.achievement-date {
+  font-size: 0.95rem;
+  color: #555;
+}
+.achievement-container {
+   width: 100%;
+    margin: 1rem auto 0; 
+    padding: 2rem 4 rem;
+    border-radius: 12px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+   .achievement-guide {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.achievement-guide li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.achievement-guide img {
+  width: 40px;
+  height: auto;
+  border-radius: 6px;
+}
+.achievement-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  gap: 0.75rem;
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+  text-align: center;
+}
+.achievement-icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-right: 1rem; 
+  font-size: 3rem;
+}
+
+.achievement-icon-btn:hover {
+  background: none !important;
+  color: inherit;
+}
+
+/* register and login */
+.login-container {
+    max-width: 1000px;
+    margin: 4rem auto 0; 
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+.login-container input[type="text"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .register-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 2rem;
+    background-color: whitesmoke;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .register-container input[type="text"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+.login-container input[type="password"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .register-container input[type="password"] {
+    height: 40px;
+    padding: 0 0.75rem;
+    width: 250px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .register-btn {
+    margin-bottom: 1rem;
+  }
+
+  /*  footer */
+  .page-content {
+  flex: 1;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  padding: 2rem 1rem;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+
+
+.site-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+
+}
+.details-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 12em;
+
+}
+.plants-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 27em;
+}
+
+.ach-footer {
+
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 37rem;
+}
